@@ -1,0 +1,1 @@
+export const SET_OAUTH_PARAM = 'global/SET_OAUTH_PARAM';

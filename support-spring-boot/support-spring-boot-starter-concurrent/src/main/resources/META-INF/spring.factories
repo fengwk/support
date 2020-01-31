@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.fengwk.support.spring.boot.starter.concurrent.lock.DistributedLockAutoConfiguration

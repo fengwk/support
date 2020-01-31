@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fengwk.support.spring.boot.starter.mysql.TestMapper">
+	
+	<sql id="table">
+		Test
+	</sql>
+	
+    <sql id="cols">
+    	*
+    </sql>
+    
+    <insert id="batchInsert" useGeneratedKeys="true" keyProperty="id">
+        insert into <include refid="table" /> (<include refid="cols" />) 
+        values 
+        <foreach collection="collection" item="item">
+        	(
+        	#{item.id}, #{item.createdTime}, #{item.modifiedTime}, #{item.deleteFlag}, 
+        	#{item.fileSystemId}, #{item.localPath}, #{item.originalName}, #{item.type}, 
+        	#{item.digest}, #{item.size}
+        	)
+        </foreach>
+    </insert>
+    
+    <update id="update">
+        update <include refid="table" /> 
+        set createdTime=#{useToUpdate.createdTime}, modifiedTime=#{useToUpdate.modifiedTime}, deleteFlag=#{useToUpdate.deleteFlag}, 
+        fileSystemId=#{useToUpdate.fileSystemId} , localPath=#{useToUpdate.localPath}, originalName=#{useToUpdate.originalName}, 
+        type=#{useToUpdate.type}, digest=#{useToUpdate.digest}, size=#{useToUpdate.size}
+        where id=#{useToUpdate.id}
+    </update>
+    
+    <select id="list" resultType="TestPO">
+        select <include refid="cols" /> from <include refid="table" /> 
+        where id in 
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+        	#{id}
+        </foreach>
+        and deleteFlag=0
+    </select>
+    
+    <select id="listByName" parameterType="String" resultType="TestPO">
+        select <include refid="cols" /> from <include refid="table" /> 
+        where name=#{name}
+    </select>
+    
+</mapper>
