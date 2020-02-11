@@ -4,8 +4,8 @@ import java.net.URI;
 
 import org.apache.http.client.utils.URIBuilder;
 
-import com.fengwk.support.core.domain.model.ValueObject;
 import com.fengwk.support.core.exception.Preconditions;
+import com.fengwk.support.domain.model.ValueObject;
 import com.fengwk.support.uc.domain.oauth2.Constants;
 
 import lombok.Data;

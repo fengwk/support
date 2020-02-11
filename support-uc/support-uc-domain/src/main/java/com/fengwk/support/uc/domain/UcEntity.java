@@ -1,6 +1,6 @@
 package com.fengwk.support.uc.domain;
 
-import com.fengwk.support.core.domain.model.BasicEntity;
+import com.fengwk.support.domain.model.BasicEntity;
 
 /**
  * 

@@ -3,8 +3,6 @@ package com.fengwk.support.uc.infrastructure.mysql.oauth2.repo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.fengwk.support.spring.boot.starter.mysql.BasicMapper;
-import com.fengwk.support.spring.boot.starter.mysql.convention.Converter;
 import com.fengwk.support.uc.domain.oauth2.model.AuthorizationCode;
 import com.fengwk.support.uc.domain.oauth2.repo.AuthorizationCodeRepository;
 import com.fengwk.support.uc.infrastructure.mysql.UcMysqlRepository;
@@ -22,29 +20,18 @@ import tk.mybatis.mapper.entity.Example;
 public class MysqlAuthorizationCodeRepository extends UcMysqlRepository<AuthorizationCode, AuthorizationCodePO> implements AuthorizationCodeRepository {
 
     @Autowired
-    volatile AuthorizationCodeMapper authorizationCodeMapper;
-    
-    @Autowired
-    volatile AuthorizationCodeConverter authorizationCodeConverter;
-    
-    @Override
-    protected BasicMapper<AuthorizationCodePO, Long> mapper() {
-        return authorizationCodeMapper;
+    public MysqlAuthorizationCodeRepository(AuthorizationCodeMapper authorizationCodeMapper, AuthorizationCodeConverter authorizationCodeConverter) {
+        super(authorizationCodeMapper, authorizationCodeConverter);
     }
 
     @Override
-    protected Converter<AuthorizationCode, AuthorizationCodePO, Long> converter() {
-        return authorizationCodeConverter;
-    }
-    
-    @Override
     public void add(AuthorizationCode authCode) {
-        mapperConvention().insert(authCode);
+        mapper().insert(authCode);
     }
 
     @Override
     public void update(AuthorizationCode authCode) {
-        mapperConvention().updateById(authCode);
+        mapper().updateById(authCode);
     }
 
     @Override
@@ -52,7 +39,7 @@ public class MysqlAuthorizationCodeRepository extends UcMysqlRepository<Authoriz
         Example example = exampleBuilder()
                 .andWhere(weekendSqls().andEqualTo(AuthorizationCodePO::getCode, code))
                 .build();
-        return mapperConvention().getByExample(example);
+        return mapper().getByExample(example);
     }
 
 }

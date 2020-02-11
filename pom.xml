@@ -13,10 +13,13 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>support-core</module>
+		<module>support-domain</module>
 		<module>support-spring-boot</module>
 		<module>support-dev</module>
 		<module>support-uc</module>
 		<module>support-filesystem</module>
+		<module>support-util</module>
+		<module>support-convention</module>
 	</modules>
 
 	<properties>
@@ -30,6 +33,11 @@
 			<dependency>
 				<groupId>com.fengwk.support</groupId>
 				<artifactId>support-core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fengwk.support</groupId>
+				<artifactId>support-domain</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -54,12 +62,7 @@
 			</dependency>
 			<dependency>
 				<groupId>com.fengwk.support.spring-boot</groupId>
-				<artifactId>support-spring-boot-starter-redission</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.fengwk.support.spring-boot</groupId>
-				<artifactId>support-spring-boot-starter-web</artifactId>
+				<artifactId>support-spring-boot-starter-restful</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -83,9 +86,9 @@
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/tk.mybatis/mapper-spring-boot-starter -->
 			<dependency>
-			    <groupId>tk.mybatis</groupId>
-			    <artifactId>mapper-spring-boot-starter</artifactId>
-			    <version>2.1.5</version>
+				<groupId>tk.mybatis</groupId>
+				<artifactId>mapper-spring-boot-starter</artifactId>
+				<version>2.1.5</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/com.alibaba/druid-spring-boot-starter -->
 			<dependency>

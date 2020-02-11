@@ -10,6 +10,8 @@ import com.fengwk.support.uc.domain.oauth2.model.Client;
 import com.fengwk.support.uc.domain.oauth2.model.ClientCredentialsTokenRequest;
 import com.fengwk.support.uc.domain.oauth2.model.Token;
 import com.fengwk.support.uc.domain.oauth2.repo.AuthorizationCodeRepository;
+import com.fengwk.support.uc.domain.oauth2.repo.ClientCheckedQuery;
+import com.fengwk.support.uc.domain.oauth2.repo.ClientRepository;
 import com.fengwk.support.uc.domain.oauth2.repo.TokenRepository;
 
 /**
@@ -21,9 +23,6 @@ import com.fengwk.support.uc.domain.oauth2.repo.TokenRepository;
 public class ClientCredentialsTokenService {
 
     @Autowired
-    volatile ClientChecker clientChecker;
-    
-    @Autowired
     volatile TokenRecycleStrategy tokenRecycleStrategy;
     
     @Autowired
@@ -32,11 +31,14 @@ public class ClientCredentialsTokenService {
     @Autowired
     volatile TokenRepository tokenRepository;
     
+    @Autowired
+    volatile ClientRepository clientRepository;
+    
     public Token token(ClientCredentialsTokenRequest request) {
         Preconditions.notNull(request, "令牌授权请求不能为空");
         Preconditions.isTrue(request.isClientCredentialsMode(), "令牌授权模式异常");
         
-        Client client = clientChecker.checkAndGet(request.getClientId());
+        Client client = new ClientCheckedQuery(clientRepository).getByIdRequiredAvailable(request.getClientId());
         client.checkSecret(request.getClientSecret());
         
         tokenRecycleStrategy.recycle(request.getClientId(), null, client.isExclusive(), client.getTokenCountLimit());

@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import com.fengwk.support.core.exception.ExceptionCodes;
 import com.fengwk.support.core.util.FileTypeParser;
+import com.fengwk.support.domain.exception.DomainException;
 import com.fengwk.support.filesystem.domain.facade.LocalFilesystem;
 import com.fengwk.support.filesystem.domain.facade.LocalFilesystemRegistry;
 import com.fengwk.support.filesystem.domain.model.File;
@@ -59,13 +59,13 @@ public class FileServiceImpl implements FileService {
             return file;
         } catch (IOException e) {
             log.error("存储文件异常.", e);
-            throw ExceptionCodes.biz().create("存储文件异常.");
+            throw new DomainException("存储文件异常");
         } finally {
             try {
                 fileInput.getInput().close();
             } catch (IOException e) {
                 log.error("关闭输入流异常.", e);
-                throw ExceptionCodes.unknown().create("关闭输入流异常.");
+                throw new DomainException("关闭输入流异常");
             }
         }
     }

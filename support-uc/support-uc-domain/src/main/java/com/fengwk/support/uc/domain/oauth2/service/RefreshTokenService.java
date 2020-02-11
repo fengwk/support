@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fengwk.support.core.exception.ExceptionCodes;
 import com.fengwk.support.core.exception.Preconditions;
+import com.fengwk.support.domain.exception.DomainException;
 import com.fengwk.support.uc.domain.oauth2.model.Client;
 import com.fengwk.support.uc.domain.oauth2.model.RefreshTokenRequest;
 import com.fengwk.support.uc.domain.oauth2.model.RefreshableToken;
 import com.fengwk.support.uc.domain.oauth2.model.Token;
+import com.fengwk.support.uc.domain.oauth2.repo.ClientCheckedQuery;
+import com.fengwk.support.uc.domain.oauth2.repo.ClientRepository;
 import com.fengwk.support.uc.domain.oauth2.repo.TokenRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -24,16 +26,16 @@ import lombok.extern.slf4j.Slf4j;
 public class RefreshTokenService {
 
     @Autowired
-    volatile ClientChecker clientChecker;
+    volatile TokenRepository tokenRepository;
     
     @Autowired
-    volatile TokenRepository tokenRepository;
+    volatile ClientRepository clientRepository;
     
     public RefreshableToken token(RefreshTokenRequest request) {
         Preconditions.notNull(request, "令牌授权请求不能为空");
         Preconditions.isTrue(request.isRefreshToken(), "令牌授权模式异常");
         
-        Client client = clientChecker.checkAndGet(request.getClientId());
+        Client client = new ClientCheckedQuery(clientRepository).getByIdRequiredAvailable(request.getClientId());
         client.checkSecret(request.getClientSecret());
         
         RefreshableToken token = checkoutToken(request.getRefreshToken());
@@ -46,17 +48,17 @@ public class RefreshTokenService {
     private RefreshableToken checkoutToken(String refreshToken) {
         Token token = tokenRepository.getByRefreshToken(refreshToken);
         if (token == null) {
-            log.warn("刷新令牌不存在,refreshToken={}.", refreshToken);
-            throw ExceptionCodes.biz().create("刷新令牌不存在");
+            log.warn("刷新令牌不存在, refreshToken={}.", refreshToken);
+            throw new DomainException("刷新令牌不存在");
         }
         if (!token.isRefreshable()) {
-            log.warn("刷新令牌无效,refreshToken={}.", refreshToken);
-            throw ExceptionCodes.biz().create("刷新令牌无效");
+            log.warn("刷新令牌无效, refreshToken={}.", refreshToken);
+            throw new DomainException("刷新令牌无效");
         }
         RefreshableToken rtoken = (RefreshableToken) token;
         if (rtoken.getRefreshToken().isExpired()) {
-            log.warn("刷新令牌已过期,refreshToken={}.", refreshToken);
-            throw ExceptionCodes.biz().create("刷新令牌已过期");
+            log.warn("刷新令牌已过期, refreshToken={}.", refreshToken);
+            throw new DomainException("刷新令牌已过期");
         }
         return rtoken;
     }

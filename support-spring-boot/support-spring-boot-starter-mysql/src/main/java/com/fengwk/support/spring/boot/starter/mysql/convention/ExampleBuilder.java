@@ -1,5 +1,7 @@
 package com.fengwk.support.spring.boot.starter.mysql.convention;
 
+import com.fengwk.support.core.bean.Property;
+
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.entity.SqlsCriteria;
 import tk.mybatis.mapper.util.Sqls;
@@ -26,18 +28,18 @@ public class ExampleBuilder {
         return this;
     }
 
-    public ExampleBuilder selectDistinct(Field... fields) {
-        builder.selectDistinct(convertToProperties(fields));
+    public ExampleBuilder selectDistinct(Property<?, ?>... propertys) {
+        builder.selectDistinct(adaptProperties(propertys));
         return this;
     }
 
-    public ExampleBuilder select(Field... fields) {
-        builder.select(convertToProperties(fields));
+    public ExampleBuilder select(Property<?, ?>... propertys) {
+        builder.select(adaptProperties(propertys));
         return this;
     }
 
-    public ExampleBuilder notSelect(Field... fields) {
-        builder.notSelect(convertToProperties(fields));
+    public ExampleBuilder notSelect(Property<?, ?>... propertys) {
+        builder.notSelect(adaptProperties(propertys));
         return this;
     }
 
@@ -76,18 +78,18 @@ public class ExampleBuilder {
         return this;
     }
 
-    public ExampleBuilder orderBy(Field... fields) {
-        builder.orderBy(convertToProperties(fields));
+    public ExampleBuilder orderBy(Property<?, ?>... propertys) {
+        builder.orderBy(adaptProperties(propertys));
         return this;
     }
 
-    public ExampleBuilder orderByAsc(Field... fields) {
-        builder.orderByAsc(convertToProperties(fields));
+    public ExampleBuilder orderByAsc(Property<?, ?>... propertys) {
+        builder.orderByAsc(adaptProperties(propertys));
         return this;
     }
 
-    public ExampleBuilder orderByDesc(Field... fields) {
-        builder.orderByDesc(convertToProperties(fields));
+    public ExampleBuilder orderByDesc(Property<?, ?>... propertys) {
+        builder.orderByDesc(adaptProperties(propertys));
         return this;
     }
 
@@ -110,12 +112,12 @@ public class ExampleBuilder {
         return builder.build();
     }
     
-    private String[] convertToProperties(Field... fields) {
-        String[] properties = new String[fields.length];
-        for (int i = 0; i < fields.length; i++) {
-            properties[i] = fields[i].name();
+    private String[] adaptProperties(Property<?, ?>... propertys) {
+        String[] propertyNames = new String[propertys.length];
+        for (int i = 0; i < propertys.length; i++) {
+            propertyNames[i] = propertys[i].getName();
         }
-        return properties;
+        return propertyNames;
     }
     
 }

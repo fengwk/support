@@ -12,10 +12,9 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>support-spring-boot-starter</module>
-		<module>support-spring-boot-starter-redission</module>
 		<module>support-spring-boot-starter-concurrent</module>
 		<module>support-spring-boot-starter-mysql</module>
-		<module>support-spring-boot-starter-web</module>
+		<module>support-spring-boot-starter-restful</module>
 		<module>support-spring-boot-starter-test</module>
 	</modules>
 </project>

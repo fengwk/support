@@ -33,12 +33,12 @@ public class AuthorizationCodeConverter implements UcConverter<AuthorizationCode
         authorizationCode.setUsed(ConvertUtils.intToBool(authorizationCodePO.getIsUsed()));
         
         AuthorizationCodeAuthRequest request = new AuthorizationCodeAuthRequest(
-                authorizationCodePO.getResponseType(),
-                authorizationCodePO.getClientId(),
-                URI.create(authorizationCodePO.getRedirectUri()),
-                authorizationCodePO.getScope(),
-                authorizationCodePO.getState(),
-                authorizationCodePO.getUserId());
+                authorizationCodePO.getBoundResponseType(),
+                authorizationCodePO.getBoundClientId(),
+                URI.create(authorizationCodePO.getBoundRedirectUri()),
+                authorizationCodePO.getBoundScope(),
+                authorizationCodePO.getBoundState(),
+                authorizationCodePO.getBoundUserId());
         authorizationCode.setBoundRequest(request);
         
         return authorizationCode;
@@ -61,12 +61,12 @@ public class AuthorizationCodeConverter implements UcConverter<AuthorizationCode
         
         AuthorizationCodeAuthRequest request = authorizationCode.getBoundRequest();
         if (request != null) {
-            authorizationCodePO.setResponseType(request.getResponseType());
-            authorizationCodePO.setClientId(request.getClientId());
-            authorizationCodePO.setRedirectUri(request.getRedirectUri().toString());
-            authorizationCodePO.setScope(request.getScope());
-            authorizationCodePO.setState(request.getState());
-            authorizationCodePO.setUserId(request.getUserId());
+            authorizationCodePO.setBoundResponseType(request.getResponseType());
+            authorizationCodePO.setBoundClientId(request.getClientId());
+            authorizationCodePO.setBoundRedirectUri(request.getRedirectUri().toString());
+            authorizationCodePO.setBoundScope(request.getScope());
+            authorizationCodePO.setBoundState(request.getState());
+            authorizationCodePO.setBoundUserId(request.getUserId());
         }
         
         return authorizationCodePO;

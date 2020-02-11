@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fengwk.support.core.exception.ExceptionCodes;
-import com.fengwk.support.uc.domain.security.facade.RandomMessageFacade;
+import com.fengwk.support.domain.exception.DomainException;
+import com.fengwk.support.uc.domain.security.facade.RandomMessageSender;
 import com.fengwk.support.uc.domain.security.model.EmailRandomMessage;
 import com.fengwk.support.uc.domain.security.model.Random;
 import com.fengwk.support.uc.domain.security.model.SMSRandomMessage;
@@ -20,7 +20,7 @@ import com.fengwk.support.uc.domain.security.repo.RandomRepository;
 public class RandomSendService {
 
     @Autowired
-    volatile RandomMessageFacade randomMessageFacade;
+    volatile RandomMessageSender randomMessageFacade;
     
     @Autowired
     volatile RandomRepository randomRepository;
@@ -34,11 +34,11 @@ public class RandomSendService {
             return random;
         } else {
             if (!existingRandom.isUsed() && !existingRandom.isExpired()) {
-                throw ExceptionCodes.biz().create("请勿频繁发送");
+                throw new DomainException("请勿频繁发送");
             }
             existingRandom.refresh(expiresIn);
             send(existingRandom);
-            randomRepository.update(existingRandom);
+            randomRepository.updateById(existingRandom);
             return existingRandom;
         }
     }
@@ -49,7 +49,7 @@ public class RandomSendService {
         } else if (random.getWay() == Random.Way.SMS) {
             randomMessageFacade.sendToSMS(SMSRandomMessage.from(random));
         } else {
-            throw ExceptionCodes.biz().create("验证码类型异常");
+            throw new DomainException("验证码类型异常");
         }
     }
 

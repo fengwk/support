@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
  * 
  * @author fengwk
  */
-@Table(name = "Random")
+@Table(name = "random")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class RandomPO extends UcPO {

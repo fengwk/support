@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import com.fengwk.support.uc.api.oauth2.model.AuthorizationServerRedirectRequestDTO;
-import com.fengwk.support.uc.api.oauth2.model.RevokeTokenRequestDTO;
 import com.fengwk.support.uc.api.oauth2.service.AuthorizationCodeModeApiService;
 import com.fengwk.support.uc.api.oauth2.service.ClientCredentialsModeApiService;
 import com.fengwk.support.uc.api.oauth2.service.ImplicitModeApiService;
@@ -17,7 +16,6 @@ import com.fengwk.support.uc.api.oauth2.service.OAuth2ApiService;
 import com.fengwk.support.uc.api.oauth2.service.PasswordModeApiService;
 import com.fengwk.support.uc.domain.oauth2.model.AuthorizationServer;
 import com.fengwk.support.uc.domain.oauth2.model.AuthorizationServerRedirectRequest;
-import com.fengwk.support.uc.domain.oauth2.model.RevokeTokenRequest;
 import com.fengwk.support.uc.domain.oauth2.repo.AuthorizationServerRepository;
 import com.fengwk.support.uc.domain.oauth2.service.RevokeTokenService;
 import com.fengwk.support.uc.domain.security.model.Random;
@@ -70,8 +68,8 @@ public class OAuth2ApiServiceImpl implements OAuth2ApiService {
     }
 
     @Override
-    public void revoke(RevokeTokenRequestDTO requestDTO) {
-        revokeTokenService.revoke(convert(requestDTO));
+    public void revoke(String accessToken) {
+        revokeTokenService.revoke(accessToken);
     }
 
     @Override
@@ -102,13 +100,6 @@ public class OAuth2ApiServiceImpl implements OAuth2ApiService {
                 requestDTO.getScope(), 
                 requestDTO.getState());
         return request;
-    }
-    
-    private RevokeTokenRequest convert(RevokeTokenRequestDTO requestDTO) {
-        return new RevokeTokenRequest(
-                requestDTO.getClientId(), 
-                requestDTO.getClientSecret(), 
-                requestDTO.getAccessToken());
     }
 
 }

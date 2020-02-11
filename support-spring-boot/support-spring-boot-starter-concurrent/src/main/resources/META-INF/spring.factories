@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.fengwk.support.spring.boot.starter.concurrent.lock.DistributedLockAutoConfiguration
+com.fengwk.support.spring.boot.starter.concurrent.lock.DistributedLockAutoConfiguration,
+com.fengwk.support.spring.boot.starter.concurrent.redisson.RedissonAutoConfiguration

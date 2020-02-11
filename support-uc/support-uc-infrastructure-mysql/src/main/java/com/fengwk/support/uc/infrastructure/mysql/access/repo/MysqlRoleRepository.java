@@ -8,8 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import com.fengwk.support.core.page.Page;
 import com.fengwk.support.core.page.PageQuery;
-import com.fengwk.support.spring.boot.starter.mysql.BasicMapper;
-import com.fengwk.support.spring.boot.starter.mysql.convention.Converter;
 import com.fengwk.support.uc.domain.access.model.Role;
 import com.fengwk.support.uc.domain.access.repo.RoleRepository;
 import com.fengwk.support.uc.infrastructure.mysql.UcMysqlRepository;
@@ -27,34 +25,23 @@ import tk.mybatis.mapper.entity.Example;
 public class MysqlRoleRepository extends UcMysqlRepository<Role, RolePO> implements RoleRepository {
 
     @Autowired
-    volatile RoleMapper roleMapper;
-    
-    @Autowired
-    volatile RoleConverter roleConverter;
-
-    @Override
-    protected BasicMapper<RolePO, Long> mapper() {
-        return roleMapper;
+    public MysqlRoleRepository(RoleMapper roleMapper, RoleConverter roleConverter) {
+        super(roleMapper, roleConverter);
     }
 
-    @Override
-    protected Converter<Role, RolePO, Long> converter() {
-        return roleConverter;
-    }
-    
     @Override
     public void add(Role role) {
-        mapperConvention().insert(role);
+        mapper().insert(role);
     }
 
     @Override
     public void remove(long id) {
-        mapperConvention().deleteById(id);
+        mapper().deleteById(id);
     }
 
     @Override
     public void update(Role role) {
-        mapperConvention().updateById(role);
+        mapper().updateById(role);
     }
     
     @Override
@@ -62,22 +49,22 @@ public class MysqlRoleRepository extends UcMysqlRepository<Role, RolePO> impleme
         Example example = exampleBuilder()
                 .andWhere(weekendSqls().andEqualTo(RolePO::getName, name))
                 .build();
-        return mapperConvention().countByExample(example) > 0;
+        return mapper().countByExample(example) > 0;
     }
 
     @Override
     public Role get(long id) {
-        return mapperConvention().getById(id);
+        return mapper().getById(id);
     }
 
     @Override
     public List<Role> list(Collection<Long> ids) {
-        return mapperConvention().listById(ids);
+        return mapper().listById(ids);
     }
 
     @Override
     public Page<Role> page(PageQuery pageQuery) {
-        return mapperConvention().page(pageQuery);
+        return mapper().page(pageQuery);
     }
 
 }

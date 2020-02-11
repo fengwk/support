@@ -47,10 +47,9 @@ public class RolePermissionService {
 
     public void revokePermission(long roleId, long permissionId) {
         RolePermissionLink rolePermissionLink = rolePermissionLinkRepository.get(roleId, permissionId);
-        if (rolePermissionLink == null) {
-            return;
+        if (rolePermissionLink != null) {
+            rolePermissionLinkRepository.remove(rolePermissionLink.getId());
         }
-        rolePermissionLinkRepository.remove(rolePermissionLink.getId());
     }
 
 }

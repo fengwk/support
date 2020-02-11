@@ -25,7 +25,7 @@ public class EmailAndRandomRegisterDTO {
     String password;
     
     @NotBlank
-    String responseType = "code";
+    String responseType;
     
     @NotNull
     Long clientId;
@@ -34,7 +34,7 @@ public class EmailAndRandomRegisterDTO {
     String redirectUri;
     
     @NotBlank
-    String scope = "normal";
+    String scope;
     
     String state;
     

@@ -17,7 +17,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.fengwk.uc</groupId>
-			<artifactId>support-uc-web</artifactId>
+			<artifactId>support-uc-restful</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.fengwk.uc</groupId>

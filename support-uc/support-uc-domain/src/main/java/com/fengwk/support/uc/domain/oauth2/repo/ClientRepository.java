@@ -10,6 +10,6 @@ public interface ClientRepository {
 
     void add(Client client);
     
-    Client get(long id);
+    Client getById(long id);
     
 }

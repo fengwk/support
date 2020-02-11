@@ -2,7 +2,7 @@ package com.fengwk.support.uc.domain.security.model;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.fengwk.support.core.domain.model.ValueObject;
+import com.fengwk.support.domain.model.ValueObject;
 
 import lombok.Data;
 

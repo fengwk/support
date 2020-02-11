@@ -9,8 +9,6 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
 
-import com.fengwk.support.core.exception.ExceptionCodes;
-
 /**
  * 
  * @author fengwk
@@ -51,7 +49,7 @@ public class ConvertUtils {
         } else if (Objects.equals(i, DEFAULT_INT_TRUE)) {
             return true;
         } else {
-            throw ExceptionCodes.arg().create("Int must be zero or one.");
+            throw new IllegalArgumentException("Int must be zero or one.");
         }
     }
     

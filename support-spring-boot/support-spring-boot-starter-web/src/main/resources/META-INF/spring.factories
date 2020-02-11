@@ -1,6 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.fengwk.support.spring.boot.starter.web.WebAutoConfiguration,\
-com.fengwk.support.spring.boot.starter.web.origin.CrossOriginAutoConfiguration,\
-com.fengwk.support.spring.boot.starter.web.session.CloseSessionAutoConfiguration,\
-com.fengwk.support.spring.boot.starter.web.swagger.SwaggerAutoConfiguration,\
-com.fengwk.support.spring.boot.starter.web.trace.HttpTraceAutoConfiguration

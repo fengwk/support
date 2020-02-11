@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
  * 
  * @author fengwk
  */
-@Table(name = "File")
+@Table(name = "file")
 @EqualsAndHashCode(callSuper = false)
 @Data
 public class FilePO extends FilesystemPO {

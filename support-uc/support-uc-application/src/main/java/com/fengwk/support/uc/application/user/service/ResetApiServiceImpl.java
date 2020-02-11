@@ -17,10 +17,10 @@ import com.fengwk.support.uc.domain.oauth2.service.AuthorizationCodeAuthorizeSer
 import com.fengwk.support.uc.domain.security.model.Random;
 import com.fengwk.support.uc.domain.security.repo.RandomRepository;
 import com.fengwk.support.uc.domain.security.service.RandomSendService;
-import com.fengwk.support.uc.domain.security.service.RandomService;
+import com.fengwk.support.uc.domain.security.service.RandomCheckService;
 import com.fengwk.support.uc.domain.user.model.User;
 import com.fengwk.support.uc.domain.user.repo.UserRepository;
-import com.fengwk.support.uc.domain.user.service.UserService;
+import com.fengwk.support.uc.domain.user.service.ResetPasswordService;
 
 /**
  * 
@@ -38,13 +38,13 @@ public class ResetApiServiceImpl implements ResetApiService {
     volatile RandomSendService randomSendService;
     
     @Autowired
-    volatile RandomService randomService;
-    
-    @Autowired
-    volatile UserService userService;
+    volatile RandomCheckService randomCheckService;
     
     @Autowired
     volatile AuthorizationCodeAuthorizeService authorizationCodeAuthorizeService;
+    
+    @Autowired
+    volatile ResetPasswordService resetPasswordService;
 
     @Autowired
     volatile RandomRepository randomRepository;
@@ -60,21 +60,19 @@ public class ResetApiServiceImpl implements ResetApiService {
 
     @Override
     public boolean verifyEmailRandom(EmailAndRandomDTO emailAndRandomDTO) {
-        Random random = randomService.checkValueWithIsUnusedAndGet(Random.Way.EMAIL, Random.Type.RESET, emailAndRandomDTO.getEmail(), emailAndRandomDTO.getRandom());
+        Random random = randomCheckService.checkValueWithUnusedAndGet(Random.Way.EMAIL, Random.Type.RESET, emailAndRandomDTO.getEmail(), emailAndRandomDTO.getRandom());
         random.silence();
-        randomRepository.update(random);
+        randomRepository.updateById(random);
         return true;
     }
 
     @Override
     public String resetPasswordAndAuthorize(EmailAndRandomResetPasswordResetDTO resetDTO) {
-        Random random = randomService.checkValueWithIsSilencedAndGet(Random.Way.EMAIL, Random.Type.REGISTER, resetDTO.getEmail(), resetDTO.getRandom());
+        Random random = randomCheckService.checkValueWithSilencedAndGet(Random.Way.EMAIL, Random.Type.RESET, resetDTO.getEmail(), resetDTO.getRandom());
         random.use();
-        randomRepository.update(random);
+        randomRepository.updateById(random);
         
-        User user = userService.checkout(resetDTO.getEmail());
-        user.resetPassword(resetDTO.getNewPassword());
-        userRepository.update(user);
+        User user = resetPasswordService.reset(resetDTO.getEmail(), resetDTO.getNewPassword());
         
         AuthorizationCode authCode = authorizationCodeAuthorizeService.authorize(convert(resetDTO, user.getId()));
         return authCode.getCode();

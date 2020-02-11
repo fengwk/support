@@ -11,7 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.fengwk.support.core.json.JsonUtils;
+import com.fengwk.support.core.gson.GsonUtils;
+
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.weekend.Fn;
 import tk.mybatis.mapper.weekend.WeekendSqls;
@@ -36,9 +37,9 @@ public class TestMapperTest {
         
         WeekendSqls<TestPO> ws = WeekendSqls.<TestPO>custom().andBetween(TestPO::getId, "1", "2");
         Example example = Example.builder(TestPO.class).where(ws).build();
-        System.out.println(JsonUtils.toJson(testMapper.selectByExample(example)));
+        System.out.println(GsonUtils.toJson(testMapper.selectByExample(example)));
     
-        System.out.println(JsonUtils.toJson(testMapper.listByName("你好2")));
+        System.out.println(GsonUtils.toJson(testMapper.listByName("你好2")));
     }
 
     public static void main(String[] args) throws NoSuchMethodException, SecurityException, IllegalAccessException,

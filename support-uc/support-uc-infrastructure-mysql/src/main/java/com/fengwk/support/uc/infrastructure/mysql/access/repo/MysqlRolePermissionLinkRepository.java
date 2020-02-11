@@ -2,11 +2,10 @@ package com.fengwk.support.uc.infrastructure.mysql.access.repo;
 
 import java.util.Collection;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.fengwk.support.spring.boot.starter.mysql.BasicMapper;
-import com.fengwk.support.spring.boot.starter.mysql.convention.Converter;
 import com.fengwk.support.uc.domain.access.model.RolePermissionLink;
 import com.fengwk.support.uc.domain.access.repo.RolePermissionLinkRepository;
 import com.fengwk.support.uc.infrastructure.mysql.UcMysqlRepository;
@@ -24,29 +23,18 @@ import tk.mybatis.mapper.entity.Example;
 public class MysqlRolePermissionLinkRepository extends UcMysqlRepository<RolePermissionLink, RolePermissionLinkPO> implements RolePermissionLinkRepository {
 
     @Autowired
-    volatile RolePermissionLinkMapper rolePermissionLinkMapper;
-
-    @Autowired
-    volatile RolePermissionLinkConverter rolePermissionLinkConverter;
-    
-    @Override
-    protected BasicMapper<RolePermissionLinkPO, Long> mapper() {
-        return rolePermissionLinkMapper;
-    }
-
-    @Override
-    protected Converter<RolePermissionLink, RolePermissionLinkPO, Long> converter() {
-        return rolePermissionLinkConverter;
+    public MysqlRolePermissionLinkRepository(RolePermissionLinkMapper rolePermissionLinkMapper, RolePermissionLinkConverter rolePermissionLinkConverter) {
+        super(rolePermissionLinkMapper, rolePermissionLinkConverter);
     }
     
     @Override
     public void add(RolePermissionLink rolePermissionLink) {
-        mapperConvention().insert(rolePermissionLink);
+        mapper().insert(rolePermissionLink);
     }
 
     @Override
     public void remove(long id) {
-        mapperConvention().deleteById(id);
+        mapper().deleteById(id);
     }
 
     @Override
@@ -54,7 +42,7 @@ public class MysqlRolePermissionLinkRepository extends UcMysqlRepository<RolePer
         Example example = exampleBuilder()
                 .andWhere(weekendSqls().andEqualTo(RolePermissionLinkPO::getPermissionId, permissionId))
                 .build();
-        mapperConvention().deleteByExample(example);
+        mapper().deleteByExample(example);
     }
 
     @Override
@@ -62,7 +50,7 @@ public class MysqlRolePermissionLinkRepository extends UcMysqlRepository<RolePer
         Example example = exampleBuilder()
                 .andWhere(weekendSqls().andEqualTo(RolePermissionLinkPO::getRoleId, roleId).andEqualTo(RolePermissionLinkPO::getPermissionId, permissionId))
                 .build();
-        return mapperConvention().getByExample(example);
+        return mapper().getByExample(example);
     }
 
     @Override
@@ -70,7 +58,7 @@ public class MysqlRolePermissionLinkRepository extends UcMysqlRepository<RolePer
         Example example = exampleBuilder()
                 .andWhere(weekendSqls().andEqualTo(RolePermissionLinkPO::getRoleId, roleId).andEqualTo(RolePermissionLinkPO::getPermissionId, permissionId))
                 .build();
-        return mapperConvention().countByExample(example) > 0;
+        return mapper().countByExample(example) > 0;
     }
 
     @Override
@@ -78,7 +66,7 @@ public class MysqlRolePermissionLinkRepository extends UcMysqlRepository<RolePer
         Example example = exampleBuilder()
                 .andWhere(weekendSqls().andEqualTo(RolePermissionLinkPO::getRoleId, roleId))
                 .build();
-        return mapperConvention().listByExample(example);
+        return mapper().listByExample(example);
     }
 
     @Override
@@ -86,7 +74,7 @@ public class MysqlRolePermissionLinkRepository extends UcMysqlRepository<RolePer
         Example example = exampleBuilder()
                 .andWhere(weekendSqls().andIn(RolePermissionLinkPO::getRoleId, roleIds))
                 .build();
-        return mapperConvention().listByExample(example);
+        return mapper().listByExample(example);
     }
 
 }

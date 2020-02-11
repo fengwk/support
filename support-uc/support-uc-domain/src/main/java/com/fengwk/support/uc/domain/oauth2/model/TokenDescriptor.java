@@ -1,9 +1,10 @@
 package com.fengwk.support.uc.domain.oauth2.model;
 
 import java.time.LocalDateTime;
-import com.fengwk.support.core.domain.model.ValueObject;
+
 import com.fengwk.support.core.util.DateUtils;
 import com.fengwk.support.core.util.UuidUtils;
+import com.fengwk.support.domain.model.ValueObject;
 
 import lombok.Data;
 

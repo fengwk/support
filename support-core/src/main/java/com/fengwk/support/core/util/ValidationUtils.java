@@ -2,6 +2,8 @@ package com.fengwk.support.core.util;
 
 import java.util.regex.Pattern;
 
+import com.fengwk.support.core.sql.SqlDetector;
+
 /**
  * 格式校验器
  * 
@@ -34,6 +36,13 @@ public class ValidationUtils {
             return false;
         }
         return pattern.matcher(input).matches();
+    }
+    
+    public static boolean isLegalLike(String likeFragment) {
+        if (likeFragment == null) {
+            return true;
+        }
+        return likeFragment.indexOf('%') == -1 && !SqlDetector.isInject(likeFragment);
     }
 
 }

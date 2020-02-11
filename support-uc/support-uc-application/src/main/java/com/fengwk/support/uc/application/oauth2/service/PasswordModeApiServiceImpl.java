@@ -13,7 +13,7 @@ import com.fengwk.support.uc.domain.oauth2.model.PasswordTokenRequest;
 import com.fengwk.support.uc.domain.oauth2.model.Token;
 import com.fengwk.support.uc.domain.oauth2.service.PasswordTokenService;
 import com.fengwk.support.uc.domain.user.model.User;
-import com.fengwk.support.uc.domain.user.service.UserService;
+import com.fengwk.support.uc.domain.user.service.AuthenticationService;
 
 /**
  * 
@@ -25,14 +25,14 @@ import com.fengwk.support.uc.domain.user.service.UserService;
 public class PasswordModeApiServiceImpl implements PasswordModeApiService {
 
     @Autowired
-    volatile UserService userService;
+    volatile AuthenticationService authenticationService;
     
     @Autowired
     volatile PasswordTokenService passwordTokenService;
     
     @Override
     public TokenDTO token(EmailAndPasswordTokenRequestDTO requestDTO) {
-        User user = userService.checkPasswordAndGet(requestDTO.getEmail(), requestDTO.getPassword());
+        User user = authenticationService.authenticate(requestDTO.getEmail(), requestDTO.getPassword());
         PasswordTokenRequest request = convert(requestDTO, user.getId());
         Token token = passwordTokenService.token(request);
         return TokenConverter.convert(token);

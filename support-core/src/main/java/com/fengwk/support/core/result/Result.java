@@ -1,11 +1,14 @@
 package com.fengwk.support.core.result;
 
+import java.io.Serializable;
+
 /**
+ * 结果
  * 
  * @author fengwk
  */
-public interface Result {
-    
+public interface Result<T> extends Serializable {
+
     /**
      * 是否成功
      * 
@@ -19,5 +22,19 @@ public interface Result {
      * @return
      */
     String getMessage();
-
+    
+    /**
+     * 获取结果码
+     * 
+     * @return
+     */
+    String getCode();
+    
+    /**
+     * 获取结果数据
+     * 
+     * @return
+     */
+    T getData();
+    
 }

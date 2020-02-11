@@ -80,10 +80,10 @@ public class UcInitiator {
     static final int UC_REFRESH_EXPIRES_IN = 60 * 60 * 24 * 30;
     
     private void initUcClient() {
-        Client existing = clientRepository.get(ucClientId);
-        if (existing != null) {
+        if (clientRepository.getById(ucClientId) != null) {
             return;
         }
+        
         List<RedirectRule> redirectRules = new ArrayList<>();
         redirectRules.add(new RedirectRule(RedirectRule.Mode.ANY, null));
         Client client = Client.of(UC_CLIENT_NAME, redirectRules, UC_ACCESS_EXPIRES_IN, UC_REFRESH_EXPIRES_IN, true, 1);
@@ -96,10 +96,10 @@ public class UcInitiator {
     static final String UC_ADMIN_PERMISSION = "/uc";
     
     private void initUcAdmin() {
-        User existing = userRepository.getByEmail(UC_ADMIN_EMAIL);
-        if (existing != null) {
+        if (userRepository.getByEmail(UC_ADMIN_EMAIL) != null) {
             return;
         }
+        
         User user = User.of(UC_ADMIN_EMAIL, UC_ADMIN_EMAIL, UC_ADMIN_PASSWORD);
         userRepository.add(user);
         

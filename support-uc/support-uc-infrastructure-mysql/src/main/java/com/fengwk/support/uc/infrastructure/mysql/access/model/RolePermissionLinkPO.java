@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
  * 
  * @author fengwk
  */
-@Table(name = "RolePermissionLink")
+@Table(name = "role_permission_link")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class RolePermissionLinkPO extends UcPO {

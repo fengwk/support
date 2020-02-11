@@ -17,7 +17,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.fengwk.support.spring-boot</groupId>
-			<artifactId>support-spring-boot-starter-web</artifactId>
+			<artifactId>support-spring-boot-starter-restful</artifactId>
 		</dependency>
 	</dependencies>
 </project>

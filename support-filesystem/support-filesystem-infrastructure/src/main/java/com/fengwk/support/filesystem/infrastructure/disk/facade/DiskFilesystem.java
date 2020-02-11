@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
-import com.fengwk.support.core.exception.ExceptionCodes;
 import com.fengwk.support.filesystem.domain.facade.LocalFilesystem;
 import com.fengwk.support.filesystem.domain.facade.LocalFilesystemRegistry;
 import com.fengwk.support.filesystem.domain.model.LocalFile;
@@ -75,7 +74,7 @@ public class DiskFilesystem implements LocalFilesystem {
             file = new File(new URL(root + path).getFile());
         } catch (MalformedURLException e) {
             log.error("文件存储异常.", e);
-            throw ExceptionCodes.biz().create("文件存储异常");
+            throw new IllegalStateException("文件存储异常");
         }
         if (file.exists()) {
             return path;
@@ -88,7 +87,7 @@ public class DiskFilesystem implements LocalFilesystem {
             IOUtils.copy(input, output);
         } catch (IOException e) {
             log.error("文件存储异常.", e);
-            throw ExceptionCodes.biz().create("文件存储异常");
+            throw new IllegalStateException("文件存储异常");
         }
         return path;
     }

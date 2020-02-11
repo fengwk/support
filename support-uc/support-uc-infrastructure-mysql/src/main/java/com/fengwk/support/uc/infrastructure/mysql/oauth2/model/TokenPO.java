@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
  * 
  * @author fengwk
  */
-@Table(name = "Token")
+@Table(name = "token")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class TokenPO extends UcPO {

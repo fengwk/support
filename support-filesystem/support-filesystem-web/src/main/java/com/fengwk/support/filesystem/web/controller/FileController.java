@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fengwk.support.core.result.Response;
-import com.fengwk.support.core.result.Responses;
+import com.fengwk.support.core.result.Result;
+import com.fengwk.support.core.result.Results;
 import com.fengwk.support.filesystem.api.model.FileInputDTO;
 import com.fengwk.support.filesystem.api.service.FileApiService;
 
@@ -30,13 +30,13 @@ public class FileController {
     volatile FileApiService fileApiService;
     
     @PostMapping("/upload")
-    public Response<String> upload(@RequestParam("file") MultipartFile multipartFile) throws IOException {
-        return Responses.success(fileApiService.upload(new FileInputDTO(multipartFile.getInputStream(), multipartFile.getOriginalFilename())));
+    public Result<String> upload(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+        return Results.success(fileApiService.upload(new FileInputDTO(multipartFile.getInputStream(), multipartFile.getOriginalFilename())));
     }
     
     @PostMapping("/uri")
-    public Response<String> getUri(@RequestParam("accessId") String accessId) throws IOException {
-        return Responses.success(fileApiService.getUri(accessId));
+    public Result<String> getUri(@RequestParam("accessId") String accessId) throws IOException {
+        return Results.success(fileApiService.getUri(accessId));
     }
     
 }

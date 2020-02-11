@@ -4,9 +4,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import org.apache.http.client.utils.URIBuilder;
 
-import com.fengwk.support.core.exception.ExceptionCodes;
 import com.fengwk.support.core.util.DateUtils;
 import com.fengwk.support.core.util.UuidUtils;
+import com.fengwk.support.domain.exception.DomainException;
 import com.fengwk.support.uc.domain.UcEntity;
 
 import lombok.Data;
@@ -90,7 +90,7 @@ public class AuthorizationCode extends UcEntity {
             return builder.build();
         } catch (URISyntaxException e) {
             log.error("", e);
-            throw ExceptionCodes.biz().create(e);
+            throw new DomainException(e);
         }
     }
     

@@ -13,7 +13,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.fengwk.support</groupId>
-			<artifactId>support-core</artifactId>
+			<artifactId>support-domain</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>

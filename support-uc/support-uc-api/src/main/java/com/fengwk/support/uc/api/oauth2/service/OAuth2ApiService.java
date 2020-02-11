@@ -5,7 +5,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.fengwk.support.uc.api.oauth2.model.AuthorizationServerRedirectRequestDTO;
-import com.fengwk.support.uc.api.oauth2.model.RevokeTokenRequestDTO;
 
 /**
  * oauth2服务
@@ -32,9 +31,9 @@ public interface OAuth2ApiService {
     /**
      * 回收令牌
      * 
-     * @param requestDTO
+     * @param accessToken
      */
-    void revoke(@NotNull @Valid RevokeTokenRequestDTO requestDTO);
+    void revoke(@NotBlank String accessToken);
     
     /**
      * 授权码模式

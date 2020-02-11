@@ -1,6 +1,0 @@
-@import './global.less';
-
-.bg {
-    transform: rotate(-7deg);
-    background-color: red;
-}

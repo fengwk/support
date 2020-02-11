@@ -8,7 +8,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
-import com.fengwk.support.core.json.JsonUtils;
+import com.fengwk.support.core.gson.GsonUtils;
 import com.fengwk.support.core.util.ConvertUtils;
 import com.fengwk.support.uc.domain.oauth2.model.Client;
 import com.fengwk.support.uc.domain.oauth2.model.RedirectRule;
@@ -73,14 +73,14 @@ public class ClientConverter implements UcConverter<Client, ClientPO> {
         if (CollectionUtils.isEmpty(redirectRules)) {
             return null;
         }
-        return JsonUtils.toJson(redirectRules.stream().map(ClientConverter::convert).collect(Collectors.toList()));
+        return GsonUtils.toJson(redirectRules.stream().map(ClientConverter::convert).collect(Collectors.toList()));
     }
     
     private static List<RedirectRule> convert(String redirectRules) {
         if (StringUtils.isBlank(redirectRules)) {
             return null;
         }
-        List<RedirectRulePO> redirectRulePOs = JsonUtils.fromJson(redirectRules, new TypeToken<List<RedirectRulePO>>() {}.getType());
+        List<RedirectRulePO> redirectRulePOs = GsonUtils.fromJson(redirectRules, new TypeToken<List<RedirectRulePO>>() {}.getType());
         return redirectRulePOs.stream().map(ClientConverter::convert).collect(Collectors.toList());
     }
     

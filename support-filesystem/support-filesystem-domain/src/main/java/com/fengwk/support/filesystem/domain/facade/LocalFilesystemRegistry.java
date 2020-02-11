@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.fengwk.support.core.exception.ExceptionCodes;
+import com.fengwk.support.domain.exception.DomainException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,7 +31,7 @@ public class LocalFilesystemRegistry {
         LocalFilesystem filesystem = registry.get(filesystemId);
         if (filesystem == null) {
             log.error("指定的文件系统不存在,filesystemId={}.", filesystemId);
-            throw ExceptionCodes.biz().create("指定的文件系统不存在.");
+            throw new DomainException("指定的文件系统不存在.");
         }
         return filesystem;
     }

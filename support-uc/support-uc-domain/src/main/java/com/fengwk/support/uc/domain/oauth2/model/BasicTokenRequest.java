@@ -1,6 +1,6 @@
 package com.fengwk.support.uc.domain.oauth2.model;
 
-import com.fengwk.support.core.domain.model.ValueObject;
+import com.fengwk.support.domain.model.ValueObject;
 import com.fengwk.support.uc.domain.oauth2.Constants;
 
 import lombok.Data;

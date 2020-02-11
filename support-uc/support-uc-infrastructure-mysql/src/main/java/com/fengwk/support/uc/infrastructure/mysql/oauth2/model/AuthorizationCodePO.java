@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
  * 
  * @author fengwk
  */
-@Table(name = "AuthorizationCode")
+@Table(name = "authorization_code")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class AuthorizationCodePO extends UcPO {
@@ -20,11 +20,11 @@ public class AuthorizationCodePO extends UcPO {
     Integer expiresIn;
     Integer isUsed;
     
-    String responseType;
-    Long clientId;
-    String redirectUri;
-    String scope;
-    String state;
-    Long userId;
+    String boundResponseType;
+    Long boundClientId;
+    String boundRedirectUri;
+    String boundScope;
+    String boundState;
+    Long boundUserId;
     
 }

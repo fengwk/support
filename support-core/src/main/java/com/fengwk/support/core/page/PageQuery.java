@@ -17,12 +17,17 @@ public class PageQuery implements Serializable {
     /**
      * 最小页码
      */
-    private static final Integer MINIMUM_PAGE_NUMBER = 1;
+    private static final int MINIMUM_PAGE_NUMBER = 1;
     
     /**
      * 最小分页尺寸
      */
-    private static final Integer MINIMUM_PAGE_SIZE = 0;
+    private static final int MINIMUM_PAGE_SIZE = 0;
+    
+    /**
+     * 最大分页尺寸
+     */
+    private static final int MAXIMUM_PAGE_SIZE = 1000;
     
     /**
      * 页码
@@ -173,6 +178,9 @@ public class PageQuery implements Serializable {
         }
         if (pageSize < MINIMUM_PAGE_SIZE) {
             throw new IllegalArgumentException("pageSize < MINIMUM_PAGE_SIZE");
+        }
+        if (pageSize > MAXIMUM_PAGE_SIZE) {
+            throw new IllegalArgumentException("pageSize > MAXIMUM_PAGE_SIZE");
         }
         offset = (pageNumber - 1) * pageSize;
         limit = pageSize + 1;

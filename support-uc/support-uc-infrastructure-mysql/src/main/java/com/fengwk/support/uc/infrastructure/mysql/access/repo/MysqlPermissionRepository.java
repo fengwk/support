@@ -8,8 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import com.fengwk.support.core.page.Page;
 import com.fengwk.support.core.page.PageQuery;
-import com.fengwk.support.spring.boot.starter.mysql.BasicMapper;
-import com.fengwk.support.spring.boot.starter.mysql.convention.Converter;
 import com.fengwk.support.uc.domain.access.model.Permission;
 import com.fengwk.support.uc.domain.access.repo.PermissionRepository;
 import com.fengwk.support.uc.infrastructure.mysql.UcMysqlRepository;
@@ -27,34 +25,23 @@ import tk.mybatis.mapper.entity.Example;
 public class MysqlPermissionRepository extends UcMysqlRepository<Permission, PermissionPO> implements PermissionRepository {
 
     @Autowired
-    volatile PermissionMapper permissionMapper;
-    
-    @Autowired
-    volatile PermissionConverter permissionConverter;
-
-    @Override
-    protected BasicMapper<PermissionPO, Long> mapper() {
-        return permissionMapper;
-    }
-
-    @Override
-    protected Converter<Permission, PermissionPO, Long> converter() {
-        return permissionConverter;
+    public MysqlPermissionRepository(PermissionMapper permissionMapper, PermissionConverter permissionConverter) {
+        super(permissionMapper, permissionConverter);
     }
     
     @Override
     public void add(Permission permission) {
-        mapperConvention().insert(permission);
+        mapper().insert(permission);
     }
 
     @Override
     public void remove(long id) {
-        mapperConvention().deleteById(id);
+        mapper().deleteById(id);
     }
 
     @Override
     public void update(Permission permission) {
-        mapperConvention().updateById(permission);
+        mapper().updateById(permission);
     }
     
     @Override
@@ -62,22 +49,22 @@ public class MysqlPermissionRepository extends UcMysqlRepository<Permission, Per
         Example example = exampleBuilder()
                 .andWhere(weekendSqls().andEqualTo(PermissionPO::getName, name))
                 .build();
-        return mapperConvention().countByExample(example) > 0;
+        return mapper().countByExample(example) > 0;
     }
 
     @Override
     public Permission get(long id) {
-        return mapperConvention().getById(id);
+        return mapper().getById(id);
     }
 
     @Override
     public List<Permission> list(Collection<Long> ids) {
-        return mapperConvention().listById(ids);
+        return mapper().listById(ids);
     }
 
     @Override
     public Page<Permission> page(PageQuery pageQuery) {
-        return mapperConvention().page(pageQuery);
+        return mapper().page(pageQuery);
     }
 
 }

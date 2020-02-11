@@ -16,9 +16,11 @@ import com.fengwk.support.uc.domain.oauth2.model.ImplicitAuthRequest;
 import com.fengwk.support.uc.domain.oauth2.model.Token;
 import com.fengwk.support.uc.domain.oauth2.service.ImplicitAuthorizeService;
 import com.fengwk.support.uc.domain.security.model.Random;
-import com.fengwk.support.uc.domain.security.service.RandomService;
+import com.fengwk.support.uc.domain.security.service.RandomCheckService;
 import com.fengwk.support.uc.domain.user.model.User;
-import com.fengwk.support.uc.domain.user.service.UserService;
+import com.fengwk.support.uc.domain.user.repo.UserCheckedQuery;
+import com.fengwk.support.uc.domain.user.repo.UserRepository;
+import com.fengwk.support.uc.domain.user.service.AuthenticationService;
 
 /**
  * 
@@ -30,17 +32,20 @@ import com.fengwk.support.uc.domain.user.service.UserService;
 public class ImplicitModeApiServiceImpl implements ImplicitModeApiService {
 
     @Autowired
-    volatile UserService userService;
+    volatile AuthenticationService authenticationService;
     
     @Autowired
-    volatile RandomService randomService;
+    volatile RandomCheckService randomCheckService;
     
     @Autowired
     volatile ImplicitAuthorizeService implicitAuthorizeService;
     
+    @Autowired
+    volatile UserRepository userRepository;
+    
     @Override
     public TokenDTO authorize(EmailAndPasswordAuthRequestDTO requestDTO) {
-        User user = userService.checkPasswordAndGet(requestDTO.getEmail(), requestDTO.getPassword());
+        User user = authenticationService.authenticate(requestDTO.getEmail(), requestDTO.getPassword());
         ImplicitAuthRequest request = convert(requestDTO, user.getId());
         Token token = implicitAuthorizeService.authorize(request);
         return TokenConverter.convert(token);
@@ -48,13 +53,13 @@ public class ImplicitModeApiServiceImpl implements ImplicitModeApiService {
 
     @Override
     public TokenDTO authorize(EmailAndRandomAuthRequestDTO requestDTO) {
-        randomService.checkValueWithIsUnusedAndGet(
+        randomCheckService.checkValueWithUnusedAndGet(
                 Random.Way.EMAIL, 
                 Random.Type.AUTH, 
                 requestDTO.getEmail(), 
                 requestDTO.getRandom());
         
-        User user = userService.checkout(requestDTO.getEmail());
+        User user = new UserCheckedQuery(userRepository).getByEmailRequiredNonNull(requestDTO.getEmail());
         ImplicitAuthRequest request = convert(requestDTO, user.getId());
         Token token = implicitAuthorizeService.authorize(request);
         return TokenConverter.convert(token);

@@ -23,10 +23,12 @@ import com.fengwk.support.uc.domain.oauth2.service.AuthorizationCodeAuthorizeSer
 import com.fengwk.support.uc.domain.oauth2.service.AuthorizationCodeTokenService;
 import com.fengwk.support.uc.domain.oauth2.service.RefreshTokenService;
 import com.fengwk.support.uc.domain.security.model.Random;
-import com.fengwk.support.uc.domain.security.service.RandomService;
+import com.fengwk.support.uc.domain.security.repo.RandomRepository;
+import com.fengwk.support.uc.domain.security.service.RandomCheckService;
 import com.fengwk.support.uc.domain.user.model.User;
+import com.fengwk.support.uc.domain.user.repo.UserCheckedQuery;
 import com.fengwk.support.uc.domain.user.repo.UserRepository;
-import com.fengwk.support.uc.domain.user.service.UserService;
+import com.fengwk.support.uc.domain.user.service.AuthenticationService;
 
 /**
  * 
@@ -38,10 +40,10 @@ import com.fengwk.support.uc.domain.user.service.UserService;
 public class AuthorizationCodeModeApiServiceImpl implements AuthorizationCodeModeApiService {
 
     @Autowired
-    volatile UserService userService;
+    volatile AuthenticationService authenticationService;
     
     @Autowired
-    volatile RandomService randomService;
+    volatile RandomCheckService randomCheckService;
     
     @Autowired
     volatile AuthorizationCodeAuthorizeService authorizationCodeAuthorizeService;
@@ -53,11 +55,14 @@ public class AuthorizationCodeModeApiServiceImpl implements AuthorizationCodeMod
     volatile RefreshTokenService refreshTokenService;
     
     @Autowired
+    volatile RandomRepository randomRepository;
+    
+    @Autowired
     volatile UserRepository userRepository;
     
     @Override
     public String authorize(EmailAndPasswordAuthRequestDTO requestDTO) {
-        User user = userService.checkPasswordAndGet(requestDTO.getEmail(), requestDTO.getPassword());
+        User user = authenticationService.authenticate(requestDTO.getEmail(), requestDTO.getPassword());
         AuthorizationCodeAuthRequest request = convert(requestDTO, user.getId());
         AuthorizationCode authCode = authorizationCodeAuthorizeService.authorize(request);
         return authCode.getCode();
@@ -65,9 +70,11 @@ public class AuthorizationCodeModeApiServiceImpl implements AuthorizationCodeMod
 
     @Override
     public String authorize(EmailAndRandomAuthRequestDTO requestDTO) {
-        randomService.checkValueWithIsUnusedAndGet(Random.Way.EMAIL, Random.Type.AUTH, requestDTO.getEmail(), requestDTO.getRandom());
+        Random random = randomCheckService.checkValueWithUnusedAndGet(Random.Way.EMAIL, Random.Type.AUTH, requestDTO.getEmail(), requestDTO.getRandom());
+        random.use();
+        randomRepository.updateById(random);
         
-        User user = userService.checkout(requestDTO.getEmail());
+        User user = new UserCheckedQuery(userRepository).getByEmailRequiredNonNull(requestDTO.getEmail());
         AuthorizationCodeAuthRequest request = convert(requestDTO, user.getId());
         AuthorizationCode authCode = authorizationCodeAuthorizeService.authorize(request);
         return authCode.getCode();

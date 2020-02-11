@@ -47,10 +47,9 @@ public class UserRoleService {
 
     public void revokeRole(long userId, long roleId) {
         UserRoleLink userRoleLink = userRoleLinkRepository.get(userId, roleId);
-        if (userRoleLink == null) {
-            return;
+        if (userRoleLink != null) {
+            userRoleLinkRepository.remove(userRoleLink.getId());
         }
-        userRoleLinkRepository.remove(userRoleLink.getId());
     }
 
 }

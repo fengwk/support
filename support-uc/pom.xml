@@ -16,7 +16,7 @@
 		<module>support-uc-application</module>
 		<module>support-uc-infrastructure</module>
         <module>support-uc-infrastructure-mysql</module>
-		<module>support-uc-web</module>
+		<module>support-uc-restful</module>
 		<module>support-uc-deploy</module>
 	</modules>
 
@@ -39,7 +39,7 @@
 			</dependency>
 			<dependency>
 				<groupId>com.fengwk.uc</groupId>
-				<artifactId>support-uc-web</artifactId>
+				<artifactId>support-uc-restful</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

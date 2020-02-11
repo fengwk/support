@@ -6,8 +6,8 @@ import java.util.Objects;
 
 import org.apache.commons.collections4.CollectionUtils;
 
-import com.fengwk.support.core.exception.ExceptionCodes;
 import com.fengwk.support.core.util.UuidUtils;
+import com.fengwk.support.domain.exception.DomainException;
 import com.fengwk.support.uc.domain.UcEntity;
 
 import lombok.Data;
@@ -82,7 +82,7 @@ public class Client extends UcEntity {
     public void checkSecret(String testSecret) {
         if (!verifySecret(secret)) {
             log.warn("客户端密钥错误,clientId={},testSecret={}.", id, testSecret);
-            throw ExceptionCodes.biz().create("客户端密钥错误");
+            throw new DomainException("客户端密钥错误");
         }
     }
     
@@ -96,7 +96,7 @@ public class Client extends UcEntity {
     public void checkRedirectUri(URI redirectUri) {
         if (!verifyRedirectUri(redirectUri)) {
             log.warn("重定向地址不符合客户端要求,clientId={},redirectUri={}.", id, redirectUri);
-            throw ExceptionCodes.biz().create("重定向地址不符合客户端要求");
+            throw new DomainException("重定向地址不符合客户端要求");
         }
     }
     

@@ -2,9 +2,8 @@ package com.fengwk.support.uc.domain.user.model;
 
 import java.util.Objects;
 
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.StringUtils;
-
+import com.fengwk.support.core.exception.Preconditions;
+import com.fengwk.support.core.util.ValidationUtils;
 import com.fengwk.support.uc.domain.UcEntity;
 
 import lombok.Data;
@@ -22,30 +21,35 @@ public class User extends UcEntity {
     String nickname;
     String password;
     
-    public static User of(String email, String nickname, String cleartextPassword) {
+    public static User of(String email, String nickname, String encryptedPassword) {
         User user = new User();
         user.email = email;
         user.nickname = nickname;
-        user.password = digest(cleartextPassword);
+        user.password = encryptedPassword;
         return user;
     }
     
-    static String digest(String cleartextPassword) {
-        if (StringUtils.isBlank(cleartextPassword)) {
-            return null;
-        }
-        return DigestUtils.md5Hex(cleartextPassword);
+    public boolean isCorrectPassword(String encryptedPassword) {
+        return Objects.equals(encryptedPassword, this.password);
     }
     
-    public void resetPassword(String cleartextPassword) {
-        this.password = digest(cleartextPassword);
+    public void resetPassword(String encryptedPassword) {
+        this.password = encryptedPassword;
     }
     
-    public boolean verifyPassword(String cleartextPassword) {
-        if (this.password == null || cleartextPassword == null) {
-            return false;
-        }
-        return Objects.equals(this.password, digest(cleartextPassword));
+    public void updateSelective(String email, String nickname) {
+        
+    }
+    
+    public void checkAndSetEmail(String email) {
+        Preconditions.notEmpty(email, "邮箱不能为空");
+        Preconditions.isTrue(ValidationUtils.isEmail(email), "邮箱格式错误");
+        this.email = email;
+    }
+    
+    public void checkAndSetNickname(String nickname) {
+        Preconditions.notEmpty(nickname, "昵称不能为空");
+        this.nickname = nickname;
     }
     
 }

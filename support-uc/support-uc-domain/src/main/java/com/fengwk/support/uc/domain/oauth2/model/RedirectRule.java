@@ -3,8 +3,8 @@ package com.fengwk.support.uc.domain.oauth2.model;
 import java.net.URI;
 import java.util.Objects;
 
-import com.fengwk.support.core.domain.model.ValueObject;
-import com.fengwk.support.core.exception.ExceptionCodes;
+import com.fengwk.support.domain.exception.DomainException;
+import com.fengwk.support.domain.model.ValueObject;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,7 +31,7 @@ public class RedirectRule implements ValueObject {
         case PATH_PREFIX_MATCH:
             return verifyForPrefixMatch(uri);
         default:
-            throw ExceptionCodes.biz().create("未知的重定向模式");
+            throw new DomainException("未知的重定向模式");
         }
     }
     

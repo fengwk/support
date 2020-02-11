@@ -6,8 +6,8 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import com.fengwk.support.core.domain.model.Identity;
-import com.fengwk.support.core.json.JsonUtils;
+import com.fengwk.support.core.gson.GsonUtils;
+import com.fengwk.support.domain.model.Identity;
 
 import lombok.Data;
 
@@ -51,7 +51,7 @@ public class MemoryDB {
                 .collect(Collectors.toList());
         
         views.addAll(views2);
-        return JsonUtils.toJson(views);
+        return GsonUtils.toJson(views);
     }
     
     public static void show() {

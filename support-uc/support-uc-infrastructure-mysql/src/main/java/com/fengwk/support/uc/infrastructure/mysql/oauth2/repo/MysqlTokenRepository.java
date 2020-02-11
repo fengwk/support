@@ -5,8 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.fengwk.support.spring.boot.starter.mysql.BasicMapper;
-import com.fengwk.support.spring.boot.starter.mysql.convention.Converter;
 import com.fengwk.support.uc.domain.oauth2.model.Token;
 import com.fengwk.support.uc.domain.oauth2.repo.TokenRepository;
 import com.fengwk.support.uc.infrastructure.mysql.UcMysqlRepository;
@@ -25,24 +23,13 @@ import tk.mybatis.mapper.entity.Example;
 public class MysqlTokenRepository extends UcMysqlRepository<Token, TokenPO> implements TokenRepository {
 
     @Autowired
-    volatile TokenMapper tokenMapper;
-    
-    @Autowired
-    volatile TokenConverter tokenConverter;
-    
-    @Override
-    protected BasicMapper<TokenPO, Long> mapper() {
-        return tokenMapper;
+    public MysqlTokenRepository(TokenMapper tokenMapper, TokenConverter tokenConverter) {
+        super(tokenMapper, tokenConverter);
     }
 
     @Override
-    protected Converter<Token, TokenPO, Long> converter() {
-        return tokenConverter;
-    }
-    
-    @Override
     public void add(Token token) {
-        mapperConvention().insert(token);
+        mapper().insert(token);
     }
 
     @Override
@@ -50,7 +37,7 @@ public class MysqlTokenRepository extends UcMysqlRepository<Token, TokenPO> impl
         Example example = exampleBuilder()
                 .andWhere(weekendSqls().andEqualTo(TokenPO::getId, token.getId()).andEqualTo(TokenPO::getIsInvalid, 0))
                 .build();
-        mapperConvention().updateByExample(token, example);
+        mapper().updateByExample(token, example);
     }
 
     @Override
@@ -58,7 +45,7 @@ public class MysqlTokenRepository extends UcMysqlRepository<Token, TokenPO> impl
         Example example = exampleBuilder()
                 .andWhere(weekendSqls().andEqualTo(TokenPO::getAccessToken, accessToken))
                 .build();
-        return mapperConvention().getByExample(example);
+        return mapper().getByExample(example);
     }
 
     @Override
@@ -66,7 +53,7 @@ public class MysqlTokenRepository extends UcMysqlRepository<Token, TokenPO> impl
         Example example = exampleBuilder()
                 .andWhere(weekendSqls().andEqualTo(TokenPO::getRefreshToken, refreshToken))
                 .build();
-        return mapperConvention().getByExample(example);
+        return mapper().getByExample(example);
     }
 
     @Override
@@ -74,7 +61,7 @@ public class MysqlTokenRepository extends UcMysqlRepository<Token, TokenPO> impl
         Example example = exampleBuilder()
                 .andWhere(weekendSqls().andEqualTo(TokenPO::getClientId, clientId).andEqualTo(TokenPO::getUserId, userId).andEqualTo(TokenPO::getIsInvalid, 0))
                 .build();
-        return mapperConvention().listByExample(example);
+        return mapper().listByExample(example);
     }
 
     @Override
@@ -82,7 +69,7 @@ public class MysqlTokenRepository extends UcMysqlRepository<Token, TokenPO> impl
         Example example = exampleBuilder()
                 .andWhere(weekendSqls().andEqualTo(TokenPO::getClientId, clientId).andEqualTo(TokenPO::getUserId, TokenUserIdConvertStrategy.toPO(null)).andEqualTo(TokenPO::getIsInvalid, 0))
                 .build();
-        return mapperConvention().listByExample(example);
+        return mapper().listByExample(example);
     }
 
 }

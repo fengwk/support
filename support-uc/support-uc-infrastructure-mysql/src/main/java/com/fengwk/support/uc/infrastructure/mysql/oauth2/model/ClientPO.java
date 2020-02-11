@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
  * 
  * @author fengwk
  */
-@Table(name = "Client")
+@Table(name = "client")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class ClientPO extends UcPO {

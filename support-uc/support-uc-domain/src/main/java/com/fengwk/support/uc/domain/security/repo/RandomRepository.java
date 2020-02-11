@@ -10,7 +10,7 @@ public interface RandomRepository {
 
     void add(Random random);
     
-    void update(Random random);
+    void updateById(Random random);
     
     Random get(Random.Way way, Random.Type type, String target);
     
