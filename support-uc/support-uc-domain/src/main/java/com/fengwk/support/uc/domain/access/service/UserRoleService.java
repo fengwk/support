@@ -28,27 +28,27 @@ public class UserRoleService {
     @Autowired
     volatile UserRoleLinkRepository userRoleLinkRepository;
     
-    public List<Role> listRole(long userId) {
+    public List<Role> listRoles(long userId) {
         List<UserRoleLink> userRoleLinks = userRoleLinkRepository.listByUserId(userId);
         if (CollectionUtils.isEmpty(userRoleLinks)) {
             return Collections.emptyList();
         }
         List<Long> roleIds = userRoleLinks.stream().map(UserRoleLink::getRoleId).collect(Collectors.toList());
-        return roleRepository.list(roleIds);
+        return roleRepository.listByIds(roleIds);
     }
     
     public void grantRole(long userId, long roleId) {
         if (userRoleLinkRepository.exists(userId, roleId)) {
             return;
         }
-        UserRoleLink userRoleLink = UserRoleLink.of(userId, roleId);
+        UserRoleLink userRoleLink = UserRoleLink.create(userId, roleId);
         userRoleLinkRepository.add(userRoleLink);
     }
 
     public void revokeRole(long userId, long roleId) {
         UserRoleLink userRoleLink = userRoleLinkRepository.get(userId, roleId);
         if (userRoleLink != null) {
-            userRoleLinkRepository.remove(userRoleLink.getId());
+            userRoleLinkRepository.removeById(userRoleLink.destroy());
         }
     }
 

@@ -4,9 +4,9 @@ import java.net.URI;
 
 import org.apache.http.client.utils.URIBuilder;
 
-import com.fengwk.support.core.exception.Preconditions;
-import com.fengwk.support.domain.model.ValueObject;
-import com.fengwk.support.uc.domain.oauth2.Constants;
+import com.fengwk.support.core.convention.exception.Preconditions;
+import com.fengwk.support.core.domain.model.ValueObject;
+import com.fengwk.support.uc.domain.oauth2.OAuth2Constants;
 
 import lombok.Data;
 
@@ -21,8 +21,8 @@ abstract class BasicAuthRequest implements ValueObject {
     /**
      * 授权认证响应类型
      * 
-     * @see Constants#RESPONSE_TYPE_CODE
-     * @see Constants#RESPONSE_TYPE_TOKEN
+     * @see OAuth2Constants#RESPONSE_TYPE_CODE
+     * @see OAuth2Constants#RESPONSE_TYPE_TOKEN
      */
     protected final String responseType;
     
@@ -62,7 +62,7 @@ abstract class BasicAuthRequest implements ValueObject {
      * @return
      */
     public boolean isAuthorizationCodeMode() {
-        return Constants.RESPONSE_TYPE_CODE.equals(responseType);
+        return OAuth2Constants.RESPONSE_TYPE_CODE.equals(responseType);
     }
     
     /**
@@ -72,19 +72,19 @@ abstract class BasicAuthRequest implements ValueObject {
      * @return
      */
     public boolean isImplicitMode() {
-        return Constants.RESPONSE_TYPE_TOKEN.equals(responseType);
+        return OAuth2Constants.RESPONSE_TYPE_TOKEN.equals(responseType);
     }
     
     void appendResponseType(URIBuilder builder) {
-        builder.addParameter("response_type", responseType);
+        builder.addParameter("responseType", responseType);
     }
     
     void appendClientId(URIBuilder builder) {
-        builder.addParameter("client_id", String.valueOf(clientId));
+        builder.addParameter("clientId", String.valueOf(clientId));
     }
     
     void appendRedirectUri(URIBuilder builder) {
-        builder.addParameter("redirect_uri", redirectUri.toASCIIString());
+        builder.addParameter("redirectUri", redirectUri.toASCIIString());
     }
     
     void appendScope(URIBuilder builder) {

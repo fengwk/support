@@ -2,6 +2,7 @@ package com.fengwk.support.uc.domain.security.model;
 
 import java.util.Objects;
 
+import com.fengwk.support.core.domain.exception.DomainException;
 import com.fengwk.support.core.util.DateUtils;
 import com.fengwk.support.core.util.RandomUtils;
 import com.fengwk.support.uc.domain.UcEntity;
@@ -9,11 +10,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
+ * 验证码
  * 
  * @author fengwk
  */
+@Slf4j
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class Random extends UcEntity {
@@ -25,9 +29,12 @@ public class Random extends UcEntity {
     String target;
     String value;
     int expiresIn;// 超时时间/秒
+    /**
+     * 未使用 -> 静默(可选) -> 已使用
+     */
     Status status;
     
-    public static Random of(Way way, Type type, String target, int expiresIn) {
+    public static Random create(Way way, Type type, String target, int expiresIn) {
         Random random = new Random();
         random.way = way;
         random.type = type;
@@ -52,7 +59,7 @@ public class Random extends UcEntity {
         this.status = Status.UNUSED;
     }
     
-    public long expiresTime() {
+    private long expiresTime() {
         return DateUtils.toUnixMs(modifiedTime) + expiresIn * 1000;
     }
     
@@ -60,15 +67,15 @@ public class Random extends UcEntity {
         return System.currentTimeMillis() > expiresTime();
     }
     
-    public boolean verify(String testValue) {
-        return Objects.equals(this.value, testValue);
+    private boolean verifyValue(String value) {
+        return Objects.equals(this.value, value);
     }
     
-    public boolean isUnused() {
+    private boolean isUnused() {
         return status == Status.UNUSED;
     }
     
-    public boolean isSilenced() {
+    private boolean isSilenced() {
         return status == Status.SILENCED;
     }
     
@@ -81,7 +88,54 @@ public class Random extends UcEntity {
     }
     
     public void use() {
-        status = Status.USED;
+        this.status = Status.USED;
+    }
+    
+    public Random requiredUnexpired() {
+        if (isExpired()) {
+            log.warn("验证码已过期, random={}.", this);
+            throw new DomainException("验证码已过期");
+        }
+        return this;
+    }
+    
+    public Random requiredCorrectValue(String value) {
+        if (!verifyValue(value)) {
+            log.warn("验证码错误, random.", this);
+            throw new DomainException("验证码错误");
+        }
+        return this;
+    }
+    
+    public Random requiredUnused() {
+        if (!isUnused()) {
+            log.warn("验证码无效, random={}.", this);
+            throw new DomainException("验证码无效");
+        }
+        return this;
+    }
+    
+    public Random requiredSilenced() {
+        if (!isSilenced()) {
+            log.warn("验证码无效, random={}.", this);
+            throw new DomainException("验证码无效");
+        }
+        return this;
+    }
+    
+    public void send() {
+        
+        switch (this.way) {
+        case EMAIL:
+            
+            break;
+
+        case SMS:
+            
+            break;
+        }
+        
+        
     }
     
     @Getter

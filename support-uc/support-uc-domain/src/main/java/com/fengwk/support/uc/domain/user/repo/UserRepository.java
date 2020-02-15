@@ -1,8 +1,8 @@
 package com.fengwk.support.uc.domain.user.repo;
 
-import com.fengwk.support.core.page.Page;
-import com.fengwk.support.core.page.PageQuery;
-import com.fengwk.support.core.query.Query;
+import com.fengwk.support.core.convention.page.Page;
+import com.fengwk.support.core.convention.page.PageQuery;
+import com.fengwk.support.core.convention.query.Query;
 import com.fengwk.support.uc.domain.user.model.User;
 
 /**

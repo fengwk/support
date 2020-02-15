@@ -33,8 +33,16 @@ public class MysqlRolePermissionLinkRepository extends UcMysqlRepository<RolePer
     }
 
     @Override
-    public void remove(long id) {
+    public void removeById(long id) {
         mapper().deleteById(id);
+    }
+    
+    @Override
+    public void removeByRoleId(long roleId) {
+        Example example = exampleBuilder()
+                .andWhere(weekendSqls().andEqualTo(RolePermissionLinkPO::getRoleId, roleId))
+                .build();
+        mapper().deleteByExample(example);
     }
 
     @Override

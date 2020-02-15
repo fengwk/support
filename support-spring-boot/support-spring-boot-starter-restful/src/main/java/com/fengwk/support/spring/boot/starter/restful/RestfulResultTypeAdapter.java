@@ -2,9 +2,9 @@ package com.fengwk.support.spring.boot.starter.restful;
 
 import java.lang.reflect.Type;
 
-import com.fengwk.support.core.gson.GsonTypeAdapter;
-import com.fengwk.support.core.result.Result;
-import com.fengwk.support.core.result.Results.ResultImpl;
+import com.fengwk.support.core.convention.result.Result;
+import com.fengwk.support.core.convention.result.Results.ResultImpl;
+import com.fengwk.support.core.util.gson.GsonTypeAdapter;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;

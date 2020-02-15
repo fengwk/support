@@ -7,14 +7,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import com.fengwk.support.core.exception.Preconditions;
-import com.fengwk.support.domain.model.Identity;
+import com.fengwk.support.core.convention.exception.Preconditions;
+import com.fengwk.support.core.domain.model.BasicEntity;
 
 /**
  * 
  * @author fengwk
  */
-public class IdentityMemoryRepository<T extends Identity<I>, I> {
+public class IdentityMemoryRepository<T extends BasicEntity<I>, I> {
 
     final Map<I, T> map = new ConcurrentHashMap<>();
     

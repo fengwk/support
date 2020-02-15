@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.fengwk.support.domain.exception.DomainException;
+import com.fengwk.support.core.domain.exception.DomainException;
 
 import lombok.extern.slf4j.Slf4j;
 

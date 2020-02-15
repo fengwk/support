@@ -1,7 +1,7 @@
 package com.fengwk.support.uc.domain.oauth2.model;
 
-import com.fengwk.support.domain.model.ValueObject;
-import com.fengwk.support.uc.domain.oauth2.Constants;
+import com.fengwk.support.core.domain.model.ValueObject;
+import com.fengwk.support.uc.domain.oauth2.OAuth2Constants;
 
 import lombok.Data;
 
@@ -16,10 +16,10 @@ class BasicTokenRequest implements ValueObject {
     /**
      * 授权模式
      * 
-     * @see Constants#GRANT_TYPE_AUTHORIZATION_CODE
-     * @see Constants#GRANT_TYPE_PASSWORD
-     * @see Constants#GRANT_TYPE_CLIENT_CREDENTIALS
-     * @see Constants#GRANT_TYPE_REFRESH_TOKEN
+     * @see OAuth2Constants#GRANT_TYPE_AUTHORIZATION_CODE
+     * @see OAuth2Constants#GRANT_TYPE_PASSWORD
+     * @see OAuth2Constants#GRANT_TYPE_CLIENT_CREDENTIALS
+     * @see OAuth2Constants#GRANT_TYPE_REFRESH_TOKEN
      */
     protected final String grantType;
     
@@ -44,7 +44,7 @@ class BasicTokenRequest implements ValueObject {
      * @return
      */
     public boolean isAuthorizationCodeMode() {
-        return Constants.GRANT_TYPE_AUTHORIZATION_CODE.equals(grantType);
+        return OAuth2Constants.GRANT_TYPE_AUTHORIZATION_CODE.equals(grantType);
     }
     
     /**
@@ -54,7 +54,7 @@ class BasicTokenRequest implements ValueObject {
      * @return
      */
     public boolean isPasswordMode() {
-        return Constants.GRANT_TYPE_PASSWORD.equals(grantType);
+        return OAuth2Constants.GRANT_TYPE_PASSWORD.equals(grantType);
     }
     
     /**
@@ -64,7 +64,7 @@ class BasicTokenRequest implements ValueObject {
      * @return
      */
     public boolean isClientCredentialsMode() {
-        return Constants.GRANT_TYPE_CLIENT_CREDENTIALS.equals(grantType);
+        return OAuth2Constants.GRANT_TYPE_CLIENT_CREDENTIALS.equals(grantType);
     }
     
     /**
@@ -74,7 +74,7 @@ class BasicTokenRequest implements ValueObject {
      * @return
      */
     public boolean isRefreshToken() {
-        return Constants.GRANT_TYPE_REFRESH_TOKEN.equals(grantType);
+        return OAuth2Constants.GRANT_TYPE_REFRESH_TOKEN.equals(grantType);
     }
     
 }

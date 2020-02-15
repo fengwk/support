@@ -30,7 +30,7 @@ public class MysqlAuthorizationCodeRepository extends UcMysqlRepository<Authoriz
     }
 
     @Override
-    public void update(AuthorizationCode authCode) {
+    public void updateById(AuthorizationCode authCode) {
         mapper().updateById(authCode);
     }
 

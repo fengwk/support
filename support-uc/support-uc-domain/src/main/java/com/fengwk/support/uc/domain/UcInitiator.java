@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.fengwk.support.core.lock.DistributedLock;
-import com.fengwk.support.core.lock.DistributedLockFactory;
+import com.fengwk.support.core.convention.lock.DistributedLock;
+import com.fengwk.support.core.convention.lock.DistributedLockFactory;
 import com.fengwk.support.uc.domain.access.model.Permission;
 import com.fengwk.support.uc.domain.access.model.Role;
 import com.fengwk.support.uc.domain.access.repo.PermissionRepository;
@@ -22,6 +22,7 @@ import com.fengwk.support.uc.domain.oauth2.model.RedirectRule;
 import com.fengwk.support.uc.domain.oauth2.repo.ClientRepository;
 import com.fengwk.support.uc.domain.user.model.User;
 import com.fengwk.support.uc.domain.user.repo.UserRepository;
+import com.fengwk.support.uc.domain.user.service.EncryptionService;
 
 /**
  * 
@@ -46,6 +47,9 @@ public class UcInitiator {
     
     @Autowired
     volatile RolePermissionService rolePermissionService;
+    
+    @Autowired
+    volatile EncryptionService encryptionService;
     
     @Autowired
     volatile ClientRepository clientRepository;
@@ -86,7 +90,7 @@ public class UcInitiator {
         
         List<RedirectRule> redirectRules = new ArrayList<>();
         redirectRules.add(new RedirectRule(RedirectRule.Mode.ANY, null));
-        Client client = Client.of(UC_CLIENT_NAME, redirectRules, UC_ACCESS_EXPIRES_IN, UC_REFRESH_EXPIRES_IN, true, 1);
+        Client client = Client.create(UC_CLIENT_NAME, redirectRules, UC_ACCESS_EXPIRES_IN, UC_REFRESH_EXPIRES_IN, true, 1);
         clientRepository.add(client);
     }
     
@@ -100,13 +104,13 @@ public class UcInitiator {
             return;
         }
         
-        User user = User.of(UC_ADMIN_EMAIL, UC_ADMIN_EMAIL, UC_ADMIN_PASSWORD);
+        User user = User.create(UC_ADMIN_EMAIL, UC_ADMIN_EMAIL, encryptionService.encryptPassword(UC_ADMIN_PASSWORD));
         userRepository.add(user);
         
-        Role role = Role.of(UC_ADMIN_ROLE);
+        Role role = Role.create(UC_ADMIN_ROLE);
         roleRepository.add(role);
         
-        Permission permission = Permission.of(UC_ADMIN_PERMISSION, UC_ADMIN_PERMISSION);
+        Permission permission = Permission.create(UC_ADMIN_PERMISSION, UC_ADMIN_PERMISSION);
         permissionRepository.add(permission);
         
         userRoleService.grantRole(user.getId(), role.getId());

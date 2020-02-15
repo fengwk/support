@@ -1,6 +1,6 @@
 package com.fengwk.support.filesystem.domain;
 
-import com.fengwk.support.domain.model.BasicEntity;
+import com.fengwk.support.core.domain.model.BasicEntity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

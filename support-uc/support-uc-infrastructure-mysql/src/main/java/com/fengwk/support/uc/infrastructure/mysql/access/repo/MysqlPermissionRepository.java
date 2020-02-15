@@ -6,15 +6,17 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.fengwk.support.core.page.Page;
-import com.fengwk.support.core.page.PageQuery;
+import com.fengwk.support.core.convention.page.Page;
+import com.fengwk.support.core.convention.page.PageQuery;
+import com.fengwk.support.core.convention.query.Query;
+import com.fengwk.support.core.util.bean.Property;
+import com.fengwk.support.spring.boot.starter.mysql.convention.PropertyMapper;
 import com.fengwk.support.uc.domain.access.model.Permission;
 import com.fengwk.support.uc.domain.access.repo.PermissionRepository;
 import com.fengwk.support.uc.infrastructure.mysql.UcMysqlRepository;
 import com.fengwk.support.uc.infrastructure.mysql.access.converter.PermissionConverter;
 import com.fengwk.support.uc.infrastructure.mysql.access.mapper.PermissionMapper;
 import com.fengwk.support.uc.infrastructure.mysql.access.model.PermissionPO;
-
 import tk.mybatis.mapper.entity.Example;
 
 /**
@@ -35,12 +37,12 @@ public class MysqlPermissionRepository extends UcMysqlRepository<Permission, Per
     }
 
     @Override
-    public void remove(long id) {
+    public void removeById(long id) {
         mapper().deleteById(id);
     }
 
     @Override
-    public void update(Permission permission) {
+    public void updateById(Permission permission) {
         mapper().updateById(permission);
     }
     
@@ -53,18 +55,24 @@ public class MysqlPermissionRepository extends UcMysqlRepository<Permission, Per
     }
 
     @Override
-    public Permission get(long id) {
+    public Permission getById(long id) {
         return mapper().getById(id);
     }
 
     @Override
-    public List<Permission> list(Collection<Long> ids) {
-        return mapper().listById(ids);
+    public List<Permission> listByIds(Collection<Long> ids) {
+        return mapper().listByIds(ids);
     }
 
     @Override
-    public Page<Permission> page(PageQuery pageQuery) {
-        return mapper().page(pageQuery);
+    public Page<Permission> page(Query<Permission> query, PageQuery pageQuery) {
+        return mapper().pageByQuery(query, pageQuery);
     }
 
+    @Override
+    protected void register(PropertyMapper<Permission, PermissionPO> propertyMapper) {
+        super.register(propertyMapper);
+        propertyMapper.register(Property.of(Permission::getName), Property.of(PermissionPO::getName));
+    }
+    
 }

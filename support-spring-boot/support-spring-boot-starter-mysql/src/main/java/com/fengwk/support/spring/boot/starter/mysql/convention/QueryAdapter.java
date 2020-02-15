@@ -4,15 +4,15 @@ import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 
-import com.fengwk.support.core.bean.Property;
-import com.fengwk.support.core.query.Criteria;
-import com.fengwk.support.core.query.Criterion;
-import com.fengwk.support.core.query.OrderBy;
-import com.fengwk.support.core.query.Query;
-import com.fengwk.support.core.sql.SqlInjectionErrorCode;
-import com.fengwk.support.core.sql.SqlInjectionException;
+import com.fengwk.support.core.convention.query.Criteria;
+import com.fengwk.support.core.convention.query.Criterion;
+import com.fengwk.support.core.convention.query.OrderBy;
+import com.fengwk.support.core.convention.query.Query;
+import com.fengwk.support.core.convention.sql.SqlInjectionErrorCode;
+import com.fengwk.support.core.convention.sql.SqlInjectionException;
+import com.fengwk.support.core.domain.model.BasicEntity;
 import com.fengwk.support.core.util.ValidationUtils;
-import com.fengwk.support.domain.model.BasicEntity;
+import com.fengwk.support.core.util.bean.Property;
 import com.fengwk.support.spring.boot.starter.mysql.BasicPO;
 
 import tk.mybatis.mapper.entity.Example;
@@ -25,10 +25,10 @@ import tk.mybatis.mapper.util.Sqls;
 class QueryAdapter<E extends BasicEntity<I>, P extends BasicPO<I>, I> {
 
     private final Query<E> query;
-    private final PropertyMapper propertyMapper;
+    private final PropertyMapper<E, P> propertyMapper;
     private final Class<P> poClass;
     
-    QueryAdapter(Query<E> query, PropertyMapper propertyMapper, Class<P> poClass) {
+    QueryAdapter(Query<E> query, PropertyMapper<E, P> propertyMapper, Class<P> poClass) {
         this.query = query;
         this.propertyMapper = propertyMapper;
         this.poClass = poClass;

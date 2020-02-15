@@ -1,7 +1,6 @@
 package com.fengwk.support.spring.boot.starter.restful.origin;
 
 import java.io.IOException;
-import java.util.Enumeration;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -29,23 +28,9 @@ public class CrossOriginFilter implements Filter {
 			throws IOException, ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        String requestOrigin = httpRequest.getHeader("Origin");
-        String requestMethod = httpRequest.getHeader("Access-Control-Request-Method");
-        Enumeration<String> requestHeaders = httpRequest.getHeaders("Access-Control-Request-Headers");
-        if (isAllow(requestOrigin, requestMethod, requestHeaders)) {
-        	httpResponse.setHeader("Access-Control-Allow-Origin", requestOrigin);
-        	httpResponse.setHeader("Access-Control-Allow-Methods", requestMethod);
-        	while (requestHeaders.hasMoreElements()) {
-        		httpResponse.setHeader("Access-Control-Allow-Headers", requestHeaders.nextElement());
-        	}
-        	httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
-        }
+        CrossOriginUtils.crossOrigin(httpRequest, httpResponse);
         chain.doFilter(request, response);
 	}
-	
-	protected boolean isAllow(String requestOrigin, String requestMethod, Enumeration<String> requestHeaders) {
-        return true;
-    }
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {}

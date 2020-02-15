@@ -12,7 +12,7 @@ public class RolePermissionLink extends UcEntity {
     long roleId;
     long permissionId;
     
-    public static RolePermissionLink of(long roleId, long permissionId) {
+    public static RolePermissionLink create(long roleId, long permissionId) {
         RolePermissionLink rolePermissionLink = new RolePermissionLink();
         rolePermissionLink.roleId = roleId;
         rolePermissionLink.permissionId = permissionId;

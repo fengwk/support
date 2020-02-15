@@ -5,15 +5,15 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fengwk.support.core.result.Result;
-import com.fengwk.support.core.result.Results;
+import com.fengwk.support.core.convention.result.Result;
+import com.fengwk.support.core.convention.result.Results;
+import com.fengwk.support.spring.boot.starter.restful.auth.AuthorizationContext;
 import com.fengwk.support.spring.boot.starter.restful.trace.HttpTrace;
 import com.fengwk.support.uc.api.oauth2.model.AuthorizationCodeTokenRequestDTO;
 import com.fengwk.support.uc.api.oauth2.model.AuthorizationServerRedirectRequestDTO;
@@ -77,8 +77,9 @@ public class OAuth2Controller {
         return Results.success(oauth2ApiService.authorizationCodeMode().token(requestDTO));
     }
 
-    @DeleteMapping("/token/{accessToken}")
-    public Result<Void> revoke(@PathVariable("accessToken") String accessToken) {
+    @DeleteMapping("/token")
+    public Result<Void> revoke() {
+        String accessToken = AuthorizationContext.getAccessToken();
         oauth2ApiService.revoke(accessToken);
         return Results.success();
     }

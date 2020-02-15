@@ -2,7 +2,7 @@ package com.fengwk.support.spring.boot.starter.restful;
 
 import java.lang.reflect.Type;
 
-import com.fengwk.support.core.gson.GsonUtils;
+import com.fengwk.support.core.util.gson.GsonUtils;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;

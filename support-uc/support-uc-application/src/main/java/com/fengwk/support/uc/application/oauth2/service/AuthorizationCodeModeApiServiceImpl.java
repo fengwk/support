@@ -23,10 +23,10 @@ import com.fengwk.support.uc.domain.oauth2.service.AuthorizationCodeAuthorizeSer
 import com.fengwk.support.uc.domain.oauth2.service.AuthorizationCodeTokenService;
 import com.fengwk.support.uc.domain.oauth2.service.RefreshTokenService;
 import com.fengwk.support.uc.domain.security.model.Random;
+import com.fengwk.support.uc.domain.security.repo.CheckedRandomRepository;
 import com.fengwk.support.uc.domain.security.repo.RandomRepository;
-import com.fengwk.support.uc.domain.security.service.RandomCheckService;
 import com.fengwk.support.uc.domain.user.model.User;
-import com.fengwk.support.uc.domain.user.repo.UserCheckedQuery;
+import com.fengwk.support.uc.domain.user.repo.CheckedUserRepository;
 import com.fengwk.support.uc.domain.user.repo.UserRepository;
 import com.fengwk.support.uc.domain.user.service.AuthenticationService;
 
@@ -41,9 +41,6 @@ public class AuthorizationCodeModeApiServiceImpl implements AuthorizationCodeMod
 
     @Autowired
     volatile AuthenticationService authenticationService;
-    
-    @Autowired
-    volatile RandomCheckService randomCheckService;
     
     @Autowired
     volatile AuthorizationCodeAuthorizeService authorizationCodeAuthorizeService;
@@ -70,11 +67,11 @@ public class AuthorizationCodeModeApiServiceImpl implements AuthorizationCodeMod
 
     @Override
     public String authorize(EmailAndRandomAuthRequestDTO requestDTO) {
-        Random random = randomCheckService.checkValueWithUnusedAndGet(Random.Way.EMAIL, Random.Type.AUTH, requestDTO.getEmail(), requestDTO.getRandom());
-        random.use();
+        Random random = new CheckedRandomRepository(randomRepository).requiredNonNull().get(Random.Way.EMAIL, Random.Type.AUTH, requestDTO.getEmail());
+        random.requiredUnexpired().requiredUnused().requiredCorrectValue(requestDTO.getRandom()).use();
         randomRepository.updateById(random);
         
-        User user = new UserCheckedQuery(userRepository).getByEmailRequiredNonNull(requestDTO.getEmail());
+        User user = new CheckedUserRepository(userRepository).requiredNonNull().getByEmail(requestDTO.getEmail());
         AuthorizationCodeAuthRequest request = convert(requestDTO, user.getId());
         AuthorizationCode authCode = authorizationCodeAuthorizeService.authorize(request);
         return authCode.getCode();

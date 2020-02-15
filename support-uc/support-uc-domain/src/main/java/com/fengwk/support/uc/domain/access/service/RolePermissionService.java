@@ -28,27 +28,27 @@ public class RolePermissionService {
     @Autowired
     volatile RolePermissionLinkRepository rolePermissionLinkRepository;
 
-    public List<Permission> listPermission(long roleId) {
+    public List<Permission> listPermissions(long roleId) {
         List<RolePermissionLink> rolePermissionLinks = rolePermissionLinkRepository.listByRoleId(roleId);
         if (CollectionUtils.isEmpty(rolePermissionLinks)) {
             return Collections.emptyList();
         }
         List<Long> permissionIds = rolePermissionLinks.stream().map(RolePermissionLink::getPermissionId).collect(Collectors.toList());
-        return permissionRepository.list(permissionIds);
+        return permissionRepository.listByIds(permissionIds);
     }
     
     public void grantPermission(long roleId, long permissionId) {
         if (rolePermissionLinkRepository.exists(roleId, permissionId)) {
             return;
         }
-        RolePermissionLink rolePermissionLink = RolePermissionLink.of(roleId, permissionId);
+        RolePermissionLink rolePermissionLink = RolePermissionLink.create(roleId, permissionId);
         rolePermissionLinkRepository.add(rolePermissionLink);
     }
 
     public void revokePermission(long roleId, long permissionId) {
         RolePermissionLink rolePermissionLink = rolePermissionLinkRepository.get(roleId, permissionId);
         if (rolePermissionLink != null) {
-            rolePermissionLinkRepository.remove(rolePermissionLink.getId());
+            rolePermissionLinkRepository.removeById(rolePermissionLink.destroy());
         }
     }
 

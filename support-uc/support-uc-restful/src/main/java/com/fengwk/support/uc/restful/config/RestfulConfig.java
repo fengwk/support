@@ -10,5 +10,5 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan("com.fengwk.support.uc.restful")
 @Configuration
 public class RestfulConfig {
-
+    
 }

@@ -50,7 +50,7 @@ public class Token extends UcEntity {
      */
     protected boolean isInvalid;
     
-    public static Token of(long clientId, Long userId, String grantType, String scope, int accessExpiresIn) {
+    public static Token create(long clientId, Long userId, String grantType, String scope, int accessExpiresIn) {
         Token token = new Token();
         token.clientId = clientId;
         token.userId = userId;
@@ -58,7 +58,7 @@ public class Token extends UcEntity {
         token.scope = scope;
         token.tokenType = DEFAULT_TOKEN_TYPE;
         token.isInvalid = false;
-        token.accessToken = TokenDescriptor.of(accessExpiresIn, token.getCreatedTime());
+        token.accessToken = TokenDescriptor.create(accessExpiresIn, token.getCreatedTime());
         return token;
     }
     

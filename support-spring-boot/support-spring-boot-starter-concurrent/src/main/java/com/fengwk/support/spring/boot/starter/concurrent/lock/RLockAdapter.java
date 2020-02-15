@@ -5,7 +5,7 @@ import java.util.concurrent.locks.Condition;
 
 import org.redisson.api.RLock;
 
-import com.fengwk.support.core.lock.DistributedLock;
+import com.fengwk.support.core.convention.lock.DistributedLock;
 
 import lombok.AllArgsConstructor;
 

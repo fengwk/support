@@ -17,9 +17,9 @@ const globalReducer = (state = defaultGlobalReducer, action) => {
     switch(action.type) {
       case constants.SET_OAUTH_PARAM:
         return state
-          .set('responseType', decodeURIComponent(action.response_type))
-          .set('clientId', new Number(decodeURIComponent(action.client_id)))
-          .set('redirectUri', decodeURIComponent(action.redirect_uri))
+          .set('responseType', decodeURIComponent(action.responseType))
+          .set('clientId', new Number(decodeURIComponent(action.clientId)))
+          .set('redirectUri', decodeURIComponent(action.redirectUri))
           .set('scope', decodeURIComponent(action.scope))
           .set('state', decodeURIComponent(action.state));
 

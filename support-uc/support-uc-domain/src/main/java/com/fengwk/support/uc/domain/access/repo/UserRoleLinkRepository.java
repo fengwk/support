@@ -12,7 +12,7 @@ public interface UserRoleLinkRepository {
 
     void add(UserRoleLink userRoleLink);
     
-    void remove(long id);
+    void removeById(long id);
     
     void removeByRoleId(long roleId);
     

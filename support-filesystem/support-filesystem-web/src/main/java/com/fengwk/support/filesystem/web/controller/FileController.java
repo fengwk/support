@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fengwk.support.core.result.Result;
-import com.fengwk.support.core.result.Results;
+import com.fengwk.support.core.convention.result.Result;
+import com.fengwk.support.core.convention.result.Results;
 import com.fengwk.support.filesystem.api.model.FileInputDTO;
 import com.fengwk.support.filesystem.api.service.FileApiService;
 

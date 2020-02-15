@@ -14,7 +14,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
-import com.fengwk.support.core.gson.GsonUtils;
+import com.fengwk.support.core.util.gson.GsonUtils;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;

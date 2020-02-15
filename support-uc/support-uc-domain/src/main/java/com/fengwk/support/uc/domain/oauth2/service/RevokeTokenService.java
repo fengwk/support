@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fengwk.support.uc.domain.oauth2.model.Token;
+import com.fengwk.support.uc.domain.oauth2.repo.CheckedTokenRepository;
 import com.fengwk.support.uc.domain.oauth2.repo.TokenRepository;
 
 /**
@@ -19,14 +20,14 @@ public class RevokeTokenService {
     volatile TokenRepository tokenRepository;
     
     public void revoke(String accessToken) {
-        Token token = tokenRepository.getByAccessToken(accessToken);
+        Token token = new CheckedTokenRepository(tokenRepository).requiredNonNull().getByAccessToken(accessToken);
         
         if (token.isExpired() || token.isInvalid()) {
             return;
         }
         
         token.invalid();
-        tokenRepository.updateIfValid(token);
+        tokenRepository.updateByIdIfValid(token);
     }
     
 }

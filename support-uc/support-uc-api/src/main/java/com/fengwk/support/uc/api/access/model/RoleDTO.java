@@ -1,6 +1,6 @@
 package com.fengwk.support.uc.api.access.model;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 import lombok.Data;
 
@@ -11,10 +11,9 @@ import lombok.Data;
 @Data
 public class RoleDTO {
 
-    Long id;
-    
-    String name;
-    
-    List<Long> permissionIds;
+    private Long id;
+    private String name;
+    private LocalDateTime createdTime;
+    private LocalDateTime modifiedTime;
 
 }

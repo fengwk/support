@@ -6,8 +6,8 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import com.fengwk.support.core.gson.GsonUtils;
-import com.fengwk.support.domain.model.Identity;
+import com.fengwk.support.core.domain.model.Identity;
+import com.fengwk.support.core.util.gson.GsonUtils;
 
 import lombok.Data;
 

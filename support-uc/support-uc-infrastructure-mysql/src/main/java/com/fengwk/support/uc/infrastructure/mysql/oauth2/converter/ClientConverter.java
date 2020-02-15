@@ -8,8 +8,8 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
-import com.fengwk.support.core.gson.GsonUtils;
 import com.fengwk.support.core.util.ConvertUtils;
+import com.fengwk.support.core.util.gson.GsonUtils;
 import com.fengwk.support.uc.domain.oauth2.model.Client;
 import com.fengwk.support.uc.domain.oauth2.model.RedirectRule;
 import com.fengwk.support.uc.infrastructure.mysql.UcConverter;

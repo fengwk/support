@@ -3,8 +3,9 @@ package com.fengwk.support.uc.domain.oauth2.model;
 import java.net.URI;
 import java.util.Objects;
 
-import com.fengwk.support.domain.exception.DomainException;
-import com.fengwk.support.domain.model.ValueObject;
+import com.fengwk.support.core.convention.exception.Preconditions;
+import com.fengwk.support.core.domain.exception.DomainException;
+import com.fengwk.support.core.domain.model.ValueObject;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +20,12 @@ public class RedirectRule implements ValueObject {
 
     final Mode mode;
     final URI value;
+    
+    public RedirectRule(Mode mode, URI value) {
+        Preconditions.isTrue(mode == Mode.ANY || (mode != Mode.ANY && value != null), "重定向地址匹配条件未设置");
+        this.mode = mode;
+        this.value = value;
+    }
     
     public boolean verify(URI uri) {
         switch (mode) {

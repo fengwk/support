@@ -41,11 +41,11 @@ class TokenRecycleStrategy {
                 if (oldToken.isExpired()) {
                     // 失效超时的令牌
                     oldToken.invalid();
-                    tokenRepository.updateIfValid(oldToken);
+                    tokenRepository.updateByIdIfValid(oldToken);
                 } else {
                     // 排它模式下,所有其余令牌都会被失效
                     oldToken.invalid();
-                    tokenRepository.updateIfValid(oldToken);
+                    tokenRepository.updateByIdIfValid(oldToken);
                 }
             }
         } else {
@@ -55,11 +55,11 @@ class TokenRecycleStrategy {
                 if (oldToken.isExpired()) {
                     // 失效超时的令牌
                     oldToken.invalid();
-                    tokenRepository.updateIfValid(oldToken);
+                    tokenRepository.updateByIdIfValid(oldToken);
                 } else if (conter == tokenCountLimit - 1) {
                     // 失效超过限制数的令牌
                     oldToken.invalid();
-                    tokenRepository.updateIfValid(oldToken);
+                    tokenRepository.updateByIdIfValid(oldToken);
                 } else {
                     conter++;
                 }

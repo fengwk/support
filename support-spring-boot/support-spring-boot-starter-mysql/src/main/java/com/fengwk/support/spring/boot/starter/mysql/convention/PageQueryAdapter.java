@@ -2,7 +2,7 @@ package com.fengwk.support.spring.boot.starter.mysql.convention;
 
 import org.apache.ibatis.session.RowBounds;
 
-import com.fengwk.support.core.page.PageQuery;
+import com.fengwk.support.core.convention.page.PageQuery;
 
 /**
  * 

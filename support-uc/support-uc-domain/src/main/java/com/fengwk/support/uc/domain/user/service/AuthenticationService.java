@@ -3,8 +3,8 @@ package com.fengwk.support.uc.domain.user.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fengwk.support.core.exception.Preconditions;
-import com.fengwk.support.domain.exception.DomainException;
+import com.fengwk.support.core.convention.exception.Preconditions;
+import com.fengwk.support.core.domain.exception.DomainException;
 import com.fengwk.support.uc.domain.user.model.User;
 import com.fengwk.support.uc.domain.user.repo.UserRepository;
 
@@ -44,11 +44,7 @@ public class AuthenticationService {
         }
         
         String encryptedPassword = encryptionService.encryptPassword(cleartextPassword);
-        if (!user.isCorrectPassword(encryptedPassword)) {
-            log.warn("密码错误, email={}, cleartextPassword={}.", email, cleartextPassword);
-            throw new DomainException("密码错误");
-        }
-        
+        user.requiredCorrectPassword(encryptedPassword);
         return user;
     }
     

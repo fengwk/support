@@ -4,7 +4,7 @@ import UserTable from './components/UserTable';
 import UserPagination from './components/UserPagination';
 import styles from './index.less';
 
-const Login = (props) => {
+const User = (props) => {
   return (
     <div className={styles.container}>
       <UserSearch />
@@ -14,4 +14,4 @@ const Login = (props) => {
   );
 }
 
-export default Login;
+export default User;

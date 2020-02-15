@@ -5,8 +5,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.fengwk.support.core.lock.DistributedLockFactory;
-import com.fengwk.support.core.lock.InvalidDistributedLockFactory;
+import com.fengwk.support.core.convention.lock.DistributedLockFactory;
+import com.fengwk.support.core.convention.lock.InvalidDistributedLockFactory;
 
 /**
  * 

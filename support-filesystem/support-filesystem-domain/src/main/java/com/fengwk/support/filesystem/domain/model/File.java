@@ -1,6 +1,6 @@
 package com.fengwk.support.filesystem.domain.model;
 
-import com.fengwk.support.core.exception.Preconditions;
+import com.fengwk.support.core.convention.exception.Preconditions;
 import com.fengwk.support.core.util.UuidUtils;
 import com.fengwk.support.filesystem.domain.FilesystemEntity;
 

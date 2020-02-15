@@ -1,6 +1,6 @@
 package com.fengwk.support.spring.boot.starter.restful;
 
-import com.fengwk.support.core.code.ErrorCode;
+import com.fengwk.support.core.convention.code.ErrorCode;
 
 /**
  * 

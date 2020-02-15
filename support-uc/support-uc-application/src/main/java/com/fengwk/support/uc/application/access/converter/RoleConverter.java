@@ -18,6 +18,8 @@ public class RoleConverter {
         RoleDTO roleDTO = new RoleDTO();
         roleDTO.setId(role.getId());
         roleDTO.setName(role.getName());
+        roleDTO.setCreatedTime(role.getCreatedTime());
+        roleDTO.setModifiedTime(role.getModifiedTime());
         return roleDTO;
     }
     

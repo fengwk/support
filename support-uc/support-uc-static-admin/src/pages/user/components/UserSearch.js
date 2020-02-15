@@ -1,7 +1,8 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
+import { withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
 import { actionCreators } from '../store';
-import { Tabs, message, Input, Select } from 'antd';
+import { Input, Select } from 'antd';
 import styles from './UserSearch.less';
 
 const { Option } = Select;
@@ -9,10 +10,10 @@ const { Search } = Input;
 
 export const convertToSearchParam = ({ searchType, searchValue, pageNumber, pageSize }) => {
   return {
-    pageNumber, 
-    pageSize, 
+    pageNumber,
+    pageSize,
     email: searchType === 'email' ? searchValue : undefined,
-    nickname: searchType === 'nickname' ? searchValue : undefined 
+    nickname: searchType === 'nickname' ? searchValue : undefined
   };
 }
 
@@ -27,18 +28,21 @@ class UserSearch extends PureComponent {
           <Option value="email">邮箱</Option>
           <Option value="nickname">昵称</Option>
         </Select>
-        <Search 
-          className={styles.input} 
-          placeholder={searchType === 'email' ? '请输入您的邮箱' : '请输入您的昵称'} 
-          value={searchValue} 
-          onChange={setSearchValue} 
-          onSearch={() => search(convertToSearchParam({ searchType, searchValue, pageNumber, pageSize }))} 
+        <Search
+          className={styles.input}
+          placeholder={searchType === 'email' ? '请输入您的邮箱' : '请输入您的昵称'}
+          value={searchValue}
+          onChange={setSearchValue}
+          onSearch={() => search(convertToSearchParam({ searchType, searchValue, pageNumber, pageSize }))}
           enterButton />
       </div>
     );
   }
 
   componentDidMount() {
+    if (this.props.location.state && this.props.location.state.unload) {
+      return;
+    }
     this.props.search(convertToSearchParam(this.props));
   }
 
@@ -63,4 +67,4 @@ const mapDispatchToProps = (dispatch) => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserSearch);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(UserSearch));

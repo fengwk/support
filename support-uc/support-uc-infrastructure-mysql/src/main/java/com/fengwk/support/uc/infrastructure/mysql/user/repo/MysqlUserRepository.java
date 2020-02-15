@@ -3,10 +3,10 @@ package com.fengwk.support.uc.infrastructure.mysql.user.repo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.fengwk.support.core.bean.Property;
-import com.fengwk.support.core.page.Page;
-import com.fengwk.support.core.page.PageQuery;
-import com.fengwk.support.core.query.Query;
+import com.fengwk.support.core.convention.page.Page;
+import com.fengwk.support.core.convention.page.PageQuery;
+import com.fengwk.support.core.convention.query.Query;
+import com.fengwk.support.core.util.bean.Property;
 import com.fengwk.support.spring.boot.starter.mysql.convention.PropertyMapper;
 import com.fengwk.support.uc.domain.user.model.User;
 import com.fengwk.support.uc.domain.user.repo.UserRepository;
@@ -66,7 +66,7 @@ public class MysqlUserRepository extends UcMysqlRepository<User, UserPO> impleme
     }
 
     @Override
-    protected void register(PropertyMapper propertyMapper) {
+    protected void register(PropertyMapper<User, UserPO> propertyMapper) {
         super.register(propertyMapper);
         propertyMapper.register(Property.of(User::getEmail), Property.of(UserPO::getEmail));
         propertyMapper.register(Property.of(User::getNickname), Property.of(UserPO::getNickname));

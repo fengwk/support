@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Layout, Menu, Icon, Affix, Button } from 'antd';
+import { revokeToken, jumpOAuth2 } from "../../services/authService";
 import styles from './index.less';
 
-const { Header, Sider, Content } = Layout;
+const { Sider, Content } = Layout;
 
 class MyLayout extends PureComponent {
 
@@ -28,7 +28,7 @@ class MyLayout extends PureComponent {
       <Layout className={styles.container}>
         <Sider collapsed={collapsed}>
           <div className={styles.logo}>
-            UC ADMIN
+            { collapsed ? 'UC' : 'UC ADMIN' }
           </div>
           <Menu theme="dark" mode="inline" selectedKeys={[path]} onSelect={this.selectMenu}>
             <Menu.Item key="/">
@@ -59,7 +59,14 @@ class MyLayout extends PureComponent {
               />
               <div className={styles.headerRight}>
                 <span className={styles.userinfo}>欢迎您，admin</span>
-                <Button className={styles.logout} type="danger">注销</Button>
+                <Button
+                  className={styles.logout}
+                  type="danger"
+                  icon="poweroff"
+                  onClick={() => { revokeToken().then(() => { jumpOAuth2(); }); }}
+                >
+                  注销
+                </Button>
               </div>
             </div>
           </Affix>

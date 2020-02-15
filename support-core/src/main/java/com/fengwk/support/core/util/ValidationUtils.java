@@ -2,7 +2,7 @@ package com.fengwk.support.core.util;
 
 import java.util.regex.Pattern;
 
-import com.fengwk.support.core.sql.SqlDetector;
+import com.fengwk.support.core.convention.sql.SqlDetector;
 
 /**
  * 格式校验器

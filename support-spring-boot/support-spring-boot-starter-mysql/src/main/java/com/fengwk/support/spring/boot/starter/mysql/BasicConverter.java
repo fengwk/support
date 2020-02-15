@@ -1,6 +1,6 @@
 package com.fengwk.support.spring.boot.starter.mysql;
 
-import com.fengwk.support.domain.model.BasicEntity;
+import com.fengwk.support.core.domain.model.BasicEntity;
 
 /**
  * 

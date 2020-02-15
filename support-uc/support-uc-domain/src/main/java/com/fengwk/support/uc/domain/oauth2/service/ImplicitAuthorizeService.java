@@ -4,12 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fengwk.support.core.exception.Preconditions;
-import com.fengwk.support.uc.domain.oauth2.Constants;
+import com.fengwk.support.core.convention.exception.Preconditions;
+import com.fengwk.support.uc.domain.oauth2.OAuth2Constants;
 import com.fengwk.support.uc.domain.oauth2.model.Client;
 import com.fengwk.support.uc.domain.oauth2.model.ImplicitAuthRequest;
 import com.fengwk.support.uc.domain.oauth2.model.Token;
-import com.fengwk.support.uc.domain.oauth2.repo.ClientCheckedQuery;
+import com.fengwk.support.uc.domain.oauth2.repo.CheckedClientRepository;
 import com.fengwk.support.uc.domain.oauth2.repo.ClientRepository;
 import com.fengwk.support.uc.domain.oauth2.repo.TokenRepository;
 
@@ -36,12 +36,12 @@ public class ImplicitAuthorizeService {
         request.checkCompletable();
         Preconditions.isTrue(request.isImplicitMode(), "认证授权模式异常");
         
-        Client client = new ClientCheckedQuery(clientRepository).getByIdRequiredAvailable(request.getClientId());
-        client.checkRedirectUri(request.getRedirectUri());
+        Client client = new CheckedClientRepository(clientRepository).requiredNonNull().getById(request.getClientId());
+        client.requiredEnable().requiredCheckedRedirectUri(request.getRedirectUri());
         
         tokenRecycleStrategy.recycle(request.getClientId(), request.getUserId(), client.isExclusive(), client.getTokenCountLimit());
         
-        Token token = Token.of(request.getClientId(), request.getUserId(), Constants.GRANT_TYPE_IMPLICIT, request.getScope(), client.getAccessExpiresIn());
+        Token token = Token.create(request.getClientId(), request.getUserId(), OAuth2Constants.GRANT_TYPE_IMPLICIT, request.getScope(), client.getAccessExpiresIn());
         tokenRepository.add(token);
         return token;
     }

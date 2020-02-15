@@ -2,9 +2,9 @@ package com.fengwk.support.spring.boot.starter.mysql.convention;
 
 import java.util.List;
 
-import com.fengwk.support.core.page.Page;
-import com.fengwk.support.core.page.PageQuery;
-import com.fengwk.support.domain.model.BasicEntity;
+import com.fengwk.support.core.convention.page.Page;
+import com.fengwk.support.core.convention.page.PageQuery;
+import com.fengwk.support.core.domain.model.BasicEntity;
 import com.fengwk.support.spring.boot.starter.mysql.BasicPO;
 
 import tk.mybatis.mapper.entity.Example;
@@ -19,7 +19,7 @@ public interface ConventionMapper<E extends BasicEntity<I>, P extends BasicPO<I>
 
     E getById(I id);
     
-    List<E> listById(Iterable<I> ids);
+    List<E> listByIds(Iterable<I> ids);
 
     boolean existsById(I id);
 
@@ -47,10 +47,10 @@ public interface ConventionMapper<E extends BasicEntity<I>, P extends BasicPO<I>
     
     Page<E> page(PageQuery pageQuery);
     
-    Page<E> page(PageQuery pageQuery, boolean countTotal);
+    Page<E> page(PageQuery pageQuery, boolean isCountTotal);
 
     Page<E> pageByExample(Example example, PageQuery pageQuery);
 
-    Page<E> pageByExample(Example example, PageQuery pageQuery, boolean countTotal);
+    Page<E> pageByExample(Example example, PageQuery pageQuery, boolean isCountTotal);
 
 }

@@ -4,9 +4,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import org.apache.http.client.utils.URIBuilder;
 
+import com.fengwk.support.core.domain.exception.DomainException;
 import com.fengwk.support.core.util.DateUtils;
 import com.fengwk.support.core.util.UuidUtils;
-import com.fengwk.support.domain.exception.DomainException;
 import com.fengwk.support.uc.domain.UcEntity;
 
 import lombok.Data;
@@ -43,13 +43,29 @@ public class AuthorizationCode extends UcEntity {
      */
     AuthorizationCodeAuthRequest boundRequest;
     
-    public static AuthorizationCode of(int expiresIn, AuthorizationCodeAuthRequest boundRequest) {
+    public static AuthorizationCode create(int expiresIn, AuthorizationCodeAuthRequest boundRequest) {
         AuthorizationCode authCode = new AuthorizationCode();
         authCode.code = UuidUtils.genShort();
         authCode.expiresIn = expiresIn;
         authCode.isUsed = false;
         authCode.boundRequest = boundRequest;
         return authCode;
+    }
+    
+    public AuthorizationCode requiredUnused() {
+        if (isUsed()) {
+            log.warn("授权码已被使用, authCode={}.", this);
+            throw new DomainException("授权码已被使用");
+        }
+        return this;
+    }
+    
+    public AuthorizationCode requiredUnexpired() {
+        if (isExpired()) {
+            log.warn("授权码已过期, authCode={}.", this);
+            throw new DomainException("授权码已过期");
+        }
+        return this;
     }
     
     /**

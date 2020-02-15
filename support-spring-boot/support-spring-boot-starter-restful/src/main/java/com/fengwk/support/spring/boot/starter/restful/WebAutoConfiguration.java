@@ -5,9 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 
-import com.fengwk.support.core.gson.DefaultGsonBuilderFactory;
-import com.fengwk.support.core.result.Result;
-import com.fengwk.support.core.result.Results.ResultImpl;
+import com.fengwk.support.core.convention.result.Result;
+import com.fengwk.support.core.convention.result.Results.ResultImpl;
+import com.fengwk.support.core.util.gson.DefaultGsonBuilderFactory;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.GsonBuilder;
 

@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react';
+import React from 'react';
 import { connect } from "react-redux";
 import { actionCreators } from '../store';
 import { Pagination } from 'antd';
@@ -6,21 +6,21 @@ import { convertToSearchParam } from './UserSearch';
 import styles from './UserPagination.less';
 
 const UserPagination = (props) => {
-  const { searchType, searchValue, pageNumber, pageSize, total } = props;
+  const { pageNumber, pageSize, total } = props;
   const { search } = props;
   return (
     <div className={styles.container}>
-      <Pagination 
-        current={pageNumber} 
-        total={total} 
+      <Pagination
+        current={pageNumber}
+        pageSize={pageSize}
+        total={total}
         onChange={(page, pageSize) => {
           search({ ...convertToSearchParam(props), pageNumber: page, pageSize });
-        }} 
+        }}
        />
     </div>
   );
 };
-
 
 const mapStateToProps = (state) => ({
   searchType: state.getIn(['user', 'searchType']),

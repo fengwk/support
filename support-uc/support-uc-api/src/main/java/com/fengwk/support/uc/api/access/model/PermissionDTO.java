@@ -1,5 +1,7 @@
 package com.fengwk.support.uc.api.access.model;
 
+import java.time.LocalDateTime;
+
 import lombok.Data;
 
 /**
@@ -9,10 +11,10 @@ import lombok.Data;
 @Data
 public class PermissionDTO {
 
-    Long id;
-    
-    String name;
-    
-    String path;
+    private Long id;
+    private String name;
+    private String path;
+    private LocalDateTime createdTime;
+    private LocalDateTime modifiedTime;
     
 }

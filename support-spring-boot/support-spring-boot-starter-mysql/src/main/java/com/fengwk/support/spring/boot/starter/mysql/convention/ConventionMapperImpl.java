@@ -3,11 +3,11 @@ package com.fengwk.support.spring.boot.starter.mysql.convention;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.fengwk.support.core.exception.Preconditions;
-import com.fengwk.support.core.page.Page;
-import com.fengwk.support.core.page.PageQuery;
+import com.fengwk.support.core.convention.exception.Preconditions;
+import com.fengwk.support.core.convention.page.Page;
+import com.fengwk.support.core.convention.page.PageQuery;
+import com.fengwk.support.core.domain.model.BasicEntity;
 import com.fengwk.support.core.util.ConvertUtils;
-import com.fengwk.support.domain.model.BasicEntity;
 import com.fengwk.support.spring.boot.starter.mysql.BasicConverter;
 import com.fengwk.support.spring.boot.starter.mysql.BasicMapper;
 import com.fengwk.support.spring.boot.starter.mysql.BasicPO;
@@ -45,7 +45,7 @@ public class ConventionMapperImpl<E extends BasicEntity<I>, P extends BasicPO<I>
     }
 
     @Override
-    public List<E> listById(Iterable<I> ids) {
+    public List<E> listByIds(Iterable<I> ids) {
         Example example = new ExampleBuilder(poClass).andWhere(WeekendSqls.<P>custom().andIn(P::getId, ids)).build();
         return listByExample(example);
     }
@@ -142,9 +142,9 @@ public class ConventionMapperImpl<E extends BasicEntity<I>, P extends BasicPO<I>
     }
 
     @Override
-    public Page<E> page(PageQuery pageQuery, boolean countTotal) {
+    public Page<E> page(PageQuery pageQuery, boolean isCountTotal) {
         Example example = new ExampleBuilder(poClass).build();
-        return pageByExample(example, pageQuery, countTotal);
+        return pageByExample(example, pageQuery, isCountTotal);
     }
 
     @Override
@@ -153,10 +153,10 @@ public class ConventionMapperImpl<E extends BasicEntity<I>, P extends BasicPO<I>
     }
 
     @Override
-    public Page<E> pageByExample(Example example, PageQuery pageQuery, boolean countTotal) {
+    public Page<E> pageByExample(Example example, PageQuery pageQuery, boolean isCountTotal) {
         List<P> results = basicMapper.selectByExampleAndRowBounds(example, new PageQueryAdapter(pageQuery));
         Page<E> page = pageQuery.page(results, basicConverter::convert);
-        if (countTotal) {
+        if (isCountTotal) {
             int total = basicMapper.selectCountByExample(example);
             page.setTotal(total);
         }

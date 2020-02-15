@@ -1,6 +1,6 @@
 package com.fengwk.support.spring.boot.starter.mysql.convention;
 
-import com.fengwk.support.core.sql.SqlDetector;
+import com.fengwk.support.core.convention.sql.SqlDetector;
 
 /**
  * 

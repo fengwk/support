@@ -16,9 +16,10 @@ import com.fengwk.support.uc.domain.oauth2.model.ImplicitAuthRequest;
 import com.fengwk.support.uc.domain.oauth2.model.Token;
 import com.fengwk.support.uc.domain.oauth2.service.ImplicitAuthorizeService;
 import com.fengwk.support.uc.domain.security.model.Random;
-import com.fengwk.support.uc.domain.security.service.RandomCheckService;
+import com.fengwk.support.uc.domain.security.repo.CheckedRandomRepository;
+import com.fengwk.support.uc.domain.security.repo.RandomRepository;
 import com.fengwk.support.uc.domain.user.model.User;
-import com.fengwk.support.uc.domain.user.repo.UserCheckedQuery;
+import com.fengwk.support.uc.domain.user.repo.CheckedUserRepository;
 import com.fengwk.support.uc.domain.user.repo.UserRepository;
 import com.fengwk.support.uc.domain.user.service.AuthenticationService;
 
@@ -35,13 +36,13 @@ public class ImplicitModeApiServiceImpl implements ImplicitModeApiService {
     volatile AuthenticationService authenticationService;
     
     @Autowired
-    volatile RandomCheckService randomCheckService;
-    
-    @Autowired
     volatile ImplicitAuthorizeService implicitAuthorizeService;
     
     @Autowired
     volatile UserRepository userRepository;
+    
+    @Autowired
+    volatile RandomRepository randomRepository;
     
     @Override
     public TokenDTO authorize(EmailAndPasswordAuthRequestDTO requestDTO) {
@@ -53,13 +54,11 @@ public class ImplicitModeApiServiceImpl implements ImplicitModeApiService {
 
     @Override
     public TokenDTO authorize(EmailAndRandomAuthRequestDTO requestDTO) {
-        randomCheckService.checkValueWithUnusedAndGet(
-                Random.Way.EMAIL, 
-                Random.Type.AUTH, 
-                requestDTO.getEmail(), 
-                requestDTO.getRandom());
+        Random random = new CheckedRandomRepository(randomRepository).requiredNonNull().get(Random.Way.EMAIL, Random.Type.AUTH, requestDTO.getEmail());
+        random.requiredUnexpired().requiredUnused().requiredCorrectValue(requestDTO.getRandom()).use();
+        randomRepository.updateById(random);
         
-        User user = new UserCheckedQuery(userRepository).getByEmailRequiredNonNull(requestDTO.getEmail());
+        User user = new CheckedUserRepository(userRepository).requiredNonNull().getByEmail(requestDTO.getEmail());
         ImplicitAuthRequest request = convert(requestDTO, user.getId());
         Token token = implicitAuthorizeService.authorize(request);
         return TokenConverter.convert(token);

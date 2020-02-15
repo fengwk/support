@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.fengwk.support.core.gson.GsonUtils;
+import com.fengwk.support.core.util.gson.GsonUtils;
 
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.weekend.Fn;

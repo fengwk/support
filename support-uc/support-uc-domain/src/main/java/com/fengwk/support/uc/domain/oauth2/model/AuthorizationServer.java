@@ -5,8 +5,8 @@ import java.net.URISyntaxException;
 
 import org.apache.http.client.utils.URIBuilder;
 
-import com.fengwk.support.domain.exception.DomainException;
-import com.fengwk.support.domain.model.ValueObject;
+import com.fengwk.support.core.domain.exception.DomainException;
+import com.fengwk.support.core.domain.model.ValueObject;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

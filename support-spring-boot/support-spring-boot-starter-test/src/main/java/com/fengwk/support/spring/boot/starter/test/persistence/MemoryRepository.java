@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import com.fengwk.support.core.exception.Preconditions;
+import com.fengwk.support.core.convention.exception.Preconditions;
 
 /**
  * 

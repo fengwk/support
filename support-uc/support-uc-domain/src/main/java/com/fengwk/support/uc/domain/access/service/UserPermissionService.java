@@ -33,10 +33,10 @@ public class UserPermissionService {
     @Autowired
     volatile PermissionRepository permissionRepository;
     
-    public boolean verify(long userId, String testPath) {
+    public boolean verify(long userId, String useToVerifyPath) {
         List<Permission> permissions = listPermission(userId);
         for (Permission permission : permissions) {
-            if (permission.verify(testPath)) {
+            if (permission.verifyPath(useToVerifyPath)) {
                 return true;
             }
         }
@@ -54,7 +54,7 @@ public class UserPermissionService {
             return Collections.emptyList();
         }
         List<Long> permissionIds = rolePermissionLinks.stream().map(RolePermissionLink::getPermissionId).collect(Collectors.toList());
-        return permissionRepository.list(permissionIds);
+        return permissionRepository.listByIds(permissionIds);
     }
 
 }

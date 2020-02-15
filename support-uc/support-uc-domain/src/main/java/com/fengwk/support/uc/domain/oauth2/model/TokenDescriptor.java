@@ -2,9 +2,9 @@ package com.fengwk.support.uc.domain.oauth2.model;
 
 import java.time.LocalDateTime;
 
+import com.fengwk.support.core.domain.model.ValueObject;
 import com.fengwk.support.core.util.DateUtils;
 import com.fengwk.support.core.util.UuidUtils;
-import com.fengwk.support.domain.model.ValueObject;
 
 import lombok.Data;
 
@@ -30,16 +30,10 @@ public class TokenDescriptor implements ValueObject {
      */
     final LocalDateTime createdTime;
 
-    public static TokenDescriptor of(int expiresIn, LocalDateTime createdTime) {
+    public static TokenDescriptor create(int expiresIn, LocalDateTime createdTime) {
         return new TokenDescriptor(UuidUtils.genShort(), expiresIn, createdTime);
     }
     
-    public TokenDescriptor(String token, int expiresIn, LocalDateTime createdTime) {
-        this.token = token;
-        this.expiresIn = expiresIn;
-        this.createdTime = createdTime;
-    }
-
     /**
      * 令牌到期时间
      * 

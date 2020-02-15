@@ -5,9 +5,10 @@ import java.util.List;
 import java.util.Objects;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
+import com.fengwk.support.core.domain.exception.DomainException;
 import com.fengwk.support.core.util.UuidUtils;
-import com.fengwk.support.domain.exception.DomainException;
 import com.fengwk.support.uc.domain.UcEntity;
 
 import lombok.Data;
@@ -66,7 +67,7 @@ public class Client extends UcEntity {
      */
     boolean isDisabled;
     
-    public static Client of(String name, List<RedirectRule> redirectRules, int accessExpiresIn, int refreshExpiresIn, boolean isExclusive, int tokenCountLimit) {
+    public static Client create(String name, List<RedirectRule> redirectRules, int accessExpiresIn, int refreshExpiresIn, boolean isExclusive, int tokenCountLimit) {
         Client client = new Client();
         client.name = name;
         client.secret = UuidUtils.genShort();
@@ -79,11 +80,64 @@ public class Client extends UcEntity {
         return client;
     }
     
-    public void checkSecret(String testSecret) {
+    public void update(
+            String name, 
+            List<RedirectRule> redirectRules, 
+            Integer accessExpiresIn, 
+            Integer refreshExpiresIn, 
+            Boolean isExclusive, 
+            Integer tokenCountLimit,
+            Boolean isDisabled,
+            boolean isSelective) {
+        if (!isSelective || StringUtils.isNotBlank(name)) {
+            this.name = name;
+        }
+        if (!isSelective || CollectionUtils.isNotEmpty(redirectRules)) {
+            this.redirectRules = redirectRules;
+        }
+        if (!isSelective || accessExpiresIn != null) {
+            this.accessExpiresIn = accessExpiresIn;
+        }
+        if (!isSelective || refreshExpiresIn != null) {
+            this.refreshExpiresIn = refreshExpiresIn;
+        }
+        if (!isSelective || isExclusive != null) {
+            this.isExclusive = isExclusive;
+        }
+        if (!isSelective || tokenCountLimit != null) {
+            this.tokenCountLimit = tokenCountLimit;
+        }
+        if (!isSelective || isDisabled != null) {
+            this.isDisabled = isDisabled;
+        }
+    }
+    
+    public void refreshSecret() {
+        this.secret = UuidUtils.genShort();
+    }
+    
+    public Client requiredEnable() {
+        if (isDisabled()) {
+            log.warn("客户端已禁用, client={}.", this);
+            throw new DomainException("客户端已禁用");
+        }
+        return this;
+    }
+    
+    public Client requiredCorrectSecret(String testSecret) {
         if (!verifySecret(secret)) {
             log.warn("客户端密钥错误,clientId={},testSecret={}.", id, testSecret);
             throw new DomainException("客户端密钥错误");
         }
+        return this;
+    }
+    
+    public Client requiredCheckedRedirectUri(URI redirectUri) {
+        if (!verifyRedirectUri(redirectUri)) {
+            log.warn("重定向地址不符合客户端要求,clientId={},redirectUri={}.", id, redirectUri);
+            throw new DomainException("重定向地址不符合客户端要求");
+        }
+        return this;
     }
     
     private boolean verifySecret(String secret) {
@@ -91,13 +145,6 @@ public class Client extends UcEntity {
             return false;
         }
         return Objects.equals(this.secret, secret);
-    }
-    
-    public void checkRedirectUri(URI redirectUri) {
-        if (!verifyRedirectUri(redirectUri)) {
-            log.warn("重定向地址不符合客户端要求,clientId={},redirectUri={}.", id, redirectUri);
-            throw new DomainException("重定向地址不符合客户端要求");
-        }
     }
     
     private boolean verifyRedirectUri(URI redirectUri) {
@@ -111,5 +158,7 @@ public class Client extends UcEntity {
         }
         return false;
     }
+    
+    
 
 }

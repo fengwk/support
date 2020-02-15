@@ -12,7 +12,7 @@ public interface TokenRepository {
 
     void add(Token token);
     
-    void updateIfValid(Token token);
+    void updateByIdIfValid(Token token);
     
     Token getByAccessToken(String accessToken);
     

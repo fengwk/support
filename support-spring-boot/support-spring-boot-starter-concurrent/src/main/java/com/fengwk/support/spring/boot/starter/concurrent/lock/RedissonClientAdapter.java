@@ -2,9 +2,9 @@ package com.fengwk.support.spring.boot.starter.concurrent.lock;
 
 import org.redisson.api.RedissonClient;
 
-import com.fengwk.support.core.exception.Preconditions;
-import com.fengwk.support.core.lock.DistributedLock;
-import com.fengwk.support.core.lock.DistributedLockFactory;
+import com.fengwk.support.core.convention.exception.Preconditions;
+import com.fengwk.support.core.convention.lock.DistributedLock;
+import com.fengwk.support.core.convention.lock.DistributedLockFactory;
 
 import lombok.AllArgsConstructor;
 

@@ -4,9 +4,10 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.fengwk.support.core.page.Page;
-import com.fengwk.support.uc.api.user.model.UserQueryDTO;
-import com.fengwk.support.uc.api.user.model.UserEntityDTO;
+import com.fengwk.support.core.convention.page.Page;
+import com.fengwk.support.uc.api.user.model.UserDTO;
+import com.fengwk.support.uc.api.user.model.UserDescriptorDTO;
+import com.fengwk.support.uc.api.user.model.UserSearchDTO;
 import com.fengwk.support.uc.api.user.model.UserUpdateDTO;
 
 /**
@@ -17,8 +18,10 @@ public interface UserApiService {
     
     boolean existsByEmail(@NotBlank String email);
     
-    UserEntityDTO updateSelective(@NotNull @Valid UserUpdateDTO updateDTO);
+    UserDTO updateSelective(@NotNull @Valid UserUpdateDTO updateDTO);
     
-    Page<UserEntityDTO> query(@NotNull @Valid UserQueryDTO queryDTO);
+    Page<UserDTO> search(@NotNull @Valid UserSearchDTO queryDTO);
+    
+    UserDescriptorDTO tryGetUserDescriptor(String accessToken);
     
 }

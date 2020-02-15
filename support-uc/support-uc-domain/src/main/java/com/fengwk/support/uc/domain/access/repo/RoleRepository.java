@@ -3,8 +3,9 @@ package com.fengwk.support.uc.domain.access.repo;
 import java.util.Collection;
 import java.util.List;
 
-import com.fengwk.support.core.page.Page;
-import com.fengwk.support.core.page.PageQuery;
+import com.fengwk.support.core.convention.page.Page;
+import com.fengwk.support.core.convention.page.PageQuery;
+import com.fengwk.support.core.convention.query.Query;
 import com.fengwk.support.uc.domain.access.model.Role;
 
 /**
@@ -15,16 +16,16 @@ public interface RoleRepository {
 
     void add(Role role);
     
-    void remove(long id);
+    void removeById(long id);
     
-    void update(Role role);
+    void updateById(Role role);
 
     boolean existsByName(String name);
     
-    Role get(long id);
+    Role getById(long id);
     
-    List<Role> list(Collection<Long> ids);
+    List<Role> listByIds(Collection<Long> ids);
     
-    Page<Role> page(PageQuery pageQuery);
+    Page<Role> page(Query<Role> query, PageQuery pageQuery);
     
 }

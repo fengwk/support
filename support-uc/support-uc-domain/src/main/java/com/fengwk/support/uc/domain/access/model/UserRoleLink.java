@@ -16,7 +16,7 @@ public class UserRoleLink extends UcEntity {
     long userId;
     long roleId;
     
-    public static UserRoleLink of(long userId, long roleId) {
+    public static UserRoleLink create(long userId, long roleId) {
         UserRoleLink userRoleLink = new UserRoleLink();
         userRoleLink.userId = userId;
         userRoleLink.roleId = roleId;

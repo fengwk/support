@@ -1,5 +1,7 @@
 package com.fengwk.support.uc.api.user.model;
 
+import java.time.LocalDateTime;
+
 import lombok.Data;
 
 /**
@@ -9,8 +11,10 @@ import lombok.Data;
 @Data
 public class UserDTO {
     
-    protected Long id;
-    protected String email;
-    protected String nickname;
+    private Long id;
+    private String email;
+    private String nickname;
+    private LocalDateTime createdTime;
+    private LocalDateTime modifiedTime;
     
 }

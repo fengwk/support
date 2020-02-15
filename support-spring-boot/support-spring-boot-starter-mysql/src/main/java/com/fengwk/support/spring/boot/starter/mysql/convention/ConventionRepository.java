@@ -3,11 +3,11 @@ package com.fengwk.support.spring.boot.starter.mysql.convention;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import com.fengwk.support.core.bean.Property;
-import com.fengwk.support.core.bean.Property.Fn;
-import com.fengwk.support.core.exception.Preconditions;
-import com.fengwk.support.core.reflect.GenericUtils;
-import com.fengwk.support.domain.model.BasicEntity;
+import com.fengwk.support.core.convention.exception.Preconditions;
+import com.fengwk.support.core.domain.model.BasicEntity;
+import com.fengwk.support.core.util.bean.Property;
+import com.fengwk.support.core.util.bean.Property.Fn;
+import com.fengwk.support.core.util.reflect.GenericUtils;
 import com.fengwk.support.spring.boot.starter.mysql.BasicConverter;
 import com.fengwk.support.spring.boot.starter.mysql.BasicMapper;
 import com.fengwk.support.spring.boot.starter.mysql.BasicPO;

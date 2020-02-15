@@ -25,11 +25,11 @@ public class TokenConverter implements UcConverter<Token, TokenPO> {
         
         Token token;
         if (isRefreshable(tokenPO)) {
-            token = new Token();
-        } else {
             RefreshableToken rtoken = new RefreshableToken();
             rtoken.setRefreshToken(new TokenDescriptor(tokenPO.getRefreshToken(), tokenPO.getRefreshExpiresIn(), tokenPO.getRefreshCreatedTime()));
             token = rtoken;
+        } else {
+            token = new Token();
         }
         token.setAccessToken(new TokenDescriptor(tokenPO.getAccessToken(), tokenPO.getAccessExpiresIn(), tokenPO.getAccessCreatedTime()));
 
@@ -69,9 +69,9 @@ public class TokenConverter implements UcConverter<Token, TokenPO> {
 
         if (token.isRefreshable()) {
             RefreshableToken rtoken = (RefreshableToken) token;
-            tokenPO.setAccessToken(ConvertUtils.mapIfNotNull(rtoken.getRefreshToken(), TokenDescriptor::getToken));
-            tokenPO.setAccessExpiresIn(ConvertUtils.mapIfNotNull(rtoken.getRefreshToken(), TokenDescriptor::getExpiresIn));
-            tokenPO.setAccessCreatedTime(ConvertUtils.mapIfNotNull(rtoken.getRefreshToken(), TokenDescriptor::getCreatedTime));
+            tokenPO.setRefreshToken(ConvertUtils.mapIfNotNull(rtoken.getRefreshToken(), TokenDescriptor::getToken));
+            tokenPO.setRefreshExpiresIn(ConvertUtils.mapIfNotNull(rtoken.getRefreshToken(), TokenDescriptor::getExpiresIn));
+            tokenPO.setRefreshCreatedTime(ConvertUtils.mapIfNotNull(rtoken.getRefreshToken(), TokenDescriptor::getCreatedTime));
         }
         
         tokenPO.setIsInvalid(ConvertUtils.boolToInt(token.isInvalid()));
@@ -80,7 +80,7 @@ public class TokenConverter implements UcConverter<Token, TokenPO> {
     }
     
     private static boolean isRefreshable(TokenPO tokenPO) {
-        return StringUtils.isNotBlank(tokenPO.getRefreshToken()) && tokenPO.getRefreshExpiresIn() != null && tokenPO.getCreatedTime() != null;
+        return StringUtils.isNotBlank(tokenPO.getRefreshToken()) && tokenPO.getRefreshExpiresIn() != null && tokenPO.getRefreshCreatedTime() != null;
     }
     
 }

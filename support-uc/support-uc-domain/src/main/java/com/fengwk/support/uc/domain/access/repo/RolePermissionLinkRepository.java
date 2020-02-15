@@ -2,7 +2,6 @@ package com.fengwk.support.uc.domain.access.repo;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 import com.fengwk.support.uc.domain.access.model.RolePermissionLink;
 
@@ -14,7 +13,9 @@ public interface RolePermissionLinkRepository {
 
     void add(RolePermissionLink rolePermissionLink);
     
-    void remove(long id);
+    void removeById(long id);
+    
+    void removeByRoleId(long roleId);
     
     void removeByPermissionId(long permissionId);
     

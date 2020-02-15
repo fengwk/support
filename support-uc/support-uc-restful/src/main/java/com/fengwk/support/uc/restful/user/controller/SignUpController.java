@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fengwk.support.core.result.Result;
-import com.fengwk.support.core.result.Results;
+import com.fengwk.support.core.convention.result.Result;
+import com.fengwk.support.core.convention.result.Results;
 import com.fengwk.support.spring.boot.starter.restful.trace.HttpTrace;
 import com.fengwk.support.uc.api.user.model.EmailAndRandomDTO;
 import com.fengwk.support.uc.api.user.model.EmailAndRandomRegisterDTO;

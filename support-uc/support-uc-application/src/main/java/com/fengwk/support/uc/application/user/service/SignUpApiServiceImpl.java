@@ -15,9 +15,9 @@ import com.fengwk.support.uc.domain.oauth2.model.AuthorizationCode;
 import com.fengwk.support.uc.domain.oauth2.model.AuthorizationCodeAuthRequest;
 import com.fengwk.support.uc.domain.oauth2.service.AuthorizationCodeAuthorizeService;
 import com.fengwk.support.uc.domain.security.model.Random;
+import com.fengwk.support.uc.domain.security.repo.CheckedRandomRepository;
 import com.fengwk.support.uc.domain.security.repo.RandomRepository;
 import com.fengwk.support.uc.domain.security.service.RandomSendService;
-import com.fengwk.support.uc.domain.security.service.RandomCheckService;
 import com.fengwk.support.uc.domain.user.model.User;
 import com.fengwk.support.uc.domain.user.service.SignUpService;
 
@@ -35,9 +35,6 @@ public class SignUpApiServiceImpl implements SignUpApiService {
     
     @Autowired
     volatile RandomSendService randomSendService;
-    
-	@Autowired
-	volatile RandomCheckService randomCheckService;
 	
 	@Autowired
     volatile SignUpService registerService;
@@ -56,16 +53,16 @@ public class SignUpApiServiceImpl implements SignUpApiService {
 	
 	@Override
     public boolean verifyEmailRandom(EmailAndRandomDTO emailAndRandomDTO) {
-	    Random random = randomCheckService.checkValueWithUnusedAndGet(Random.Way.EMAIL, Random.Type.REGISTER, emailAndRandomDTO.getEmail(), emailAndRandomDTO.getRandom());
-	    random.silence();
+	    Random random = new CheckedRandomRepository(randomRepository).requiredNonNull().get(Random.Way.EMAIL, Random.Type.REGISTER, emailAndRandomDTO.getEmail());
+        random.requiredUnexpired().requiredUnused().requiredCorrectValue(emailAndRandomDTO.getRandom()).silence();
 	    randomRepository.updateById(random);
         return true;
     }
 	
     @Override
     public String signUpAndAuthorize(EmailAndRandomRegisterDTO registerDTO) {
-        Random random = randomCheckService.checkValueWithSilencedAndGet(Random.Way.EMAIL, Random.Type.REGISTER, registerDTO.getEmail(), registerDTO.getRandom());
-        random.use();
+        Random random = new CheckedRandomRepository(randomRepository).requiredNonNull().get(Random.Way.EMAIL, Random.Type.REGISTER, registerDTO.getEmail());
+        random.requiredSilenced().requiredCorrectValue(registerDTO.getRandom()).use();
         randomRepository.updateById(random);
         
         User user = registerService.signUp(registerDTO.getEmail(), registerDTO.getNickname(), registerDTO.getPassword());

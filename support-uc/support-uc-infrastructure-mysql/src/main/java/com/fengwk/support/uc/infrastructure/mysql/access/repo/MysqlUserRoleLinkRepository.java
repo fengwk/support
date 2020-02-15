@@ -32,7 +32,7 @@ public class MysqlUserRoleLinkRepository extends UcMysqlRepository<UserRoleLink,
     }
 
     @Override
-    public void remove(long id) {
+    public void removeById(long id) {
         mapper().deleteById(id);
     }
 

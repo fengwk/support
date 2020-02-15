@@ -19,6 +19,8 @@ public class PermissionConverter {
         permissionDTO.setId(permission.getId());
         permissionDTO.setName(permission.getName());
         permissionDTO.setPath(permission.getPath());
+        permissionDTO.setCreatedTime(permission.getCreatedTime());
+        permissionDTO.setModifiedTime(permission.getModifiedTime());
         return permissionDTO;
     }
     

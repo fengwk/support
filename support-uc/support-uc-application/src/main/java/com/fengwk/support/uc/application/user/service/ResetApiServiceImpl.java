@@ -15,9 +15,9 @@ import com.fengwk.support.uc.domain.oauth2.model.AuthorizationCode;
 import com.fengwk.support.uc.domain.oauth2.model.AuthorizationCodeAuthRequest;
 import com.fengwk.support.uc.domain.oauth2.service.AuthorizationCodeAuthorizeService;
 import com.fengwk.support.uc.domain.security.model.Random;
+import com.fengwk.support.uc.domain.security.repo.CheckedRandomRepository;
 import com.fengwk.support.uc.domain.security.repo.RandomRepository;
 import com.fengwk.support.uc.domain.security.service.RandomSendService;
-import com.fengwk.support.uc.domain.security.service.RandomCheckService;
 import com.fengwk.support.uc.domain.user.model.User;
 import com.fengwk.support.uc.domain.user.repo.UserRepository;
 import com.fengwk.support.uc.domain.user.service.ResetPasswordService;
@@ -36,9 +36,6 @@ public class ResetApiServiceImpl implements ResetApiService {
     
     @Autowired
     volatile RandomSendService randomSendService;
-    
-    @Autowired
-    volatile RandomCheckService randomCheckService;
     
     @Autowired
     volatile AuthorizationCodeAuthorizeService authorizationCodeAuthorizeService;
@@ -60,16 +57,16 @@ public class ResetApiServiceImpl implements ResetApiService {
 
     @Override
     public boolean verifyEmailRandom(EmailAndRandomDTO emailAndRandomDTO) {
-        Random random = randomCheckService.checkValueWithUnusedAndGet(Random.Way.EMAIL, Random.Type.RESET, emailAndRandomDTO.getEmail(), emailAndRandomDTO.getRandom());
-        random.silence();
+        Random random = new CheckedRandomRepository(randomRepository).requiredNonNull().get(Random.Way.EMAIL, Random.Type.RESET, emailAndRandomDTO.getEmail());
+        random.requiredUnexpired().requiredUnused().requiredCorrectValue(emailAndRandomDTO.getRandom()).silence();
         randomRepository.updateById(random);
         return true;
     }
 
     @Override
     public String resetPasswordAndAuthorize(EmailAndRandomResetPasswordResetDTO resetDTO) {
-        Random random = randomCheckService.checkValueWithSilencedAndGet(Random.Way.EMAIL, Random.Type.RESET, resetDTO.getEmail(), resetDTO.getRandom());
-        random.use();
+        Random random = new CheckedRandomRepository(randomRepository).requiredNonNull().get(Random.Way.EMAIL, Random.Type.RESET, resetDTO.getEmail());
+        random.requiredSilenced().requiredCorrectValue(resetDTO.getRandom()).use();
         randomRepository.updateById(random);
         
         User user = resetPasswordService.reset(resetDTO.getEmail(), resetDTO.getNewPassword());

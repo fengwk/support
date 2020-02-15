@@ -13,7 +13,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.fengwk.uc</groupId>
-			<artifactId>support-uc-api</artifactId>
+			<artifactId>support-uc-application</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.fengwk.support.spring-boot</groupId>

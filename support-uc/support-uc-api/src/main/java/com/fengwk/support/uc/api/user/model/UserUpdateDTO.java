@@ -1,5 +1,7 @@
 package com.fengwk.support.uc.api.user.model;
 
+import javax.validation.constraints.NotNull;
+
 import lombok.Data;
 
 /**
@@ -9,8 +11,11 @@ import lombok.Data;
 @Data
 public class UserUpdateDTO {
     
+    @NotNull
     private Long id;
+    
     private String email;
+    
     private String nickname;
     
 }

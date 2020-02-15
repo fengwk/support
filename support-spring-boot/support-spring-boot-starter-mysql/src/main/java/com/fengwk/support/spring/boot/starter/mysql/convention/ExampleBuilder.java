@@ -1,6 +1,6 @@
 package com.fengwk.support.spring.boot.starter.mysql.convention;
 
-import com.fengwk.support.core.bean.Property;
+import com.fengwk.support.core.util.bean.Property;
 
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.entity.SqlsCriteria;

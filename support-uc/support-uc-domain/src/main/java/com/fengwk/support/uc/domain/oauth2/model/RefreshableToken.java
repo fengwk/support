@@ -17,7 +17,7 @@ public class RefreshableToken extends Token {
      */
     protected TokenDescriptor refreshToken;
     
-    public static RefreshableToken of(long clientId, Long userId, String grantType, String scope, int accessExpiresIn, int refreshExpiresIn) {
+    public static RefreshableToken create(long clientId, Long userId, String grantType, String scope, int accessExpiresIn, int refreshExpiresIn) {
         RefreshableToken token = new RefreshableToken();
         token.clientId = clientId;
         token.userId = userId;
@@ -25,8 +25,8 @@ public class RefreshableToken extends Token {
         token.scope = scope;
         token.tokenType = DEFAULT_TOKEN_TYPE;
         token.isInvalid = false;
-        token.accessToken = TokenDescriptor.of(accessExpiresIn, token.getCreatedTime());
-        token.refreshToken = TokenDescriptor.of(refreshExpiresIn, token.getCreatedTime());
+        token.accessToken = TokenDescriptor.create(accessExpiresIn, token.getCreatedTime());
+        token.refreshToken = TokenDescriptor.create(refreshExpiresIn, token.getCreatedTime());
         return token;
     }
     
@@ -44,7 +44,7 @@ public class RefreshableToken extends Token {
      * 刷新动作将会更新访问令牌
      */
     public void refresh(int accessExpiresIn) {
-        this.accessToken = TokenDescriptor.of(accessExpiresIn, LocalDateTime.now());
+        this.accessToken = TokenDescriptor.create(accessExpiresIn, LocalDateTime.now());
     }
     
 }

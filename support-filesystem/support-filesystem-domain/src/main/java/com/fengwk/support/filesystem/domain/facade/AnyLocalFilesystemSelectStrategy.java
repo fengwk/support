@@ -5,7 +5,7 @@ import java.util.Map;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.validation.annotation.Validated;
 
-import com.fengwk.support.domain.exception.DomainException;
+import com.fengwk.support.core.domain.exception.DomainException;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -10,7 +10,7 @@ public interface AuthorizationCodeRepository {
 
     void add(AuthorizationCode authCode);
     
-    void update(AuthorizationCode authCode);
+    void updateById(AuthorizationCode authCode);
     
     AuthorizationCode getByCode(String code);
     

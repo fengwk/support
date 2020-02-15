@@ -16,17 +16,12 @@ public class UserConverter {
             return null;
         }
         UserDTO userDTO = new UserDTO();
-        cover(user, userDTO);
+        userDTO.setId(user.getId());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setNickname(user.getNickname());
+        userDTO.setCreatedTime(user.getCreatedTime());
+        userDTO.setModifiedTime(user.getModifiedTime());
         return userDTO;
     }
-    
-    static void cover(User src, UserDTO dest) {
-        if (src == null || dest == null) {
-            return;
-        }
-        dest.setEmail(src.getEmail());
-        dest.setId(src.getId());
-        dest.setNickname(src.getNickname());
-    }
-    
+
 }

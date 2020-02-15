@@ -33,7 +33,7 @@ public class MysqlTokenRepository extends UcMysqlRepository<Token, TokenPO> impl
     }
 
     @Override
-    public void updateIfValid(Token token) {
+    public void updateByIdIfValid(Token token) {
         Example example = exampleBuilder()
                 .andWhere(weekendSqls().andEqualTo(TokenPO::getId, token.getId()).andEqualTo(TokenPO::getIsInvalid, 0))
                 .build();
