@@ -9,45 +9,80 @@ import java.util.concurrent.TimeUnit;
 
 import com.fengwk.support.core.Constants;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 
  * @author fengwk
  */
+@Slf4j
 public class ThreadPool {
-
-    private ThreadPool() {}
     
-    private static final ThreadPoolExecutor INSTANCE;
+    final ThreadPoolExecutor instance;
+
+    private ThreadPool(ThreadPoolExecutor instance) {
+        this.instance = instance;
+    }
+    
+    final static ThreadPool DEFAULT;
+    
+    final static ThreadPool IO;
     
     static {
-        INSTANCE = new ThreadPoolExecutor(
-                Constants.AVAILABLE_PROCESSORS * 2,
+        DEFAULT = new ThreadPool(new ThreadPoolExecutor(
+                Constants.AVAILABLE_PROCESSORS + 1,
+                Constants.AVAILABLE_PROCESSORS * 4,
+                60,
+                TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>(10000),
+                Executors.defaultThreadFactory(),
+                new ThreadPoolExecutor.CallerRunsPolicy()));
+        
+        IO = new ThreadPool(new ThreadPoolExecutor(
+                Constants.AVAILABLE_PROCESSORS * 4,
                 Constants.AVAILABLE_PROCESSORS * 8,
                 60,
                 TimeUnit.SECONDS,
                 new LinkedBlockingQueue<>(10000),
                 Executors.defaultThreadFactory(),
-                new ThreadPoolExecutor.CallerRunsPolicy());
+                new ThreadPoolExecutor.CallerRunsPolicy()));
         
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            INSTANCE.shutdown();
+            DEFAULT.instance.shutdown();
+            IO.instance.shutdown();
+            
+            try {
+                // 等待运行完毕再终止程序
+                while (!DEFAULT.instance.awaitTermination(1, TimeUnit.SECONDS));
+                while (!IO.instance.awaitTermination(1, TimeUnit.SECONDS));
+            } catch (InterruptedException e) {
+                log.error("", e);
+            }
         }));
     }
     
-    public static void execute(Runnable command) {
-        INSTANCE.execute(command);
+    public static ThreadPool instance() {
+        return DEFAULT;
     }
     
-    public static Future<?> submit(Runnable task) {
-        return INSTANCE.submit(task);
+    public static ThreadPool io() {
+        return IO;
     }
     
-    public static <T> Future<T> submit(Runnable task, T result) {
-        return INSTANCE.submit(task, result);
+    public void execute(Runnable command) {
+        instance.execute(command);
     }
     
-    public static <T> Future<T> submit(Callable<T> callable) {
-        return INSTANCE.submit(callable);
+    public Future<?> submit(Runnable task) {
+        return instance.submit(task);
+    }
+    
+    public <T> Future<T> submit(Runnable task, T result) {
+        return instance.submit(task, result);
+    }
+    
+    public <T> Future<T> submit(Callable<T> callable) {
+        return instance.submit(callable);
     }
     
 }

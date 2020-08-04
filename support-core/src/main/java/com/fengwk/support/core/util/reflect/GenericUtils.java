@@ -23,7 +23,7 @@ public class GenericUtils {
     /**
      * 查找最接近srcClass的TypeVariable类型
      * 
-     * @param <C> S的子孙
+     * @param <C> C extends S
      * @param <S>
      * @param srcClass 从该类开始查找
      * @param targetClass 到该类结束
@@ -55,7 +55,7 @@ public class GenericUtils {
     /**
      * 查找最接近srcClass的TypeVariable类型
      * 
-     * @param <C> S的子孙
+     * @param <C> C extends S
      * @param <S>
      * @param srcClass 从该类开始查找
      * @param targetClass 到该类结束
@@ -100,7 +100,7 @@ public class GenericUtils {
         for (Type supItfType : clazz.getGenericInterfaces()) {
             if (supItfType instanceof ParameterizedType) {
                 ParameterizedType supItfPt = (ParameterizedType) supItfType;
-                Class<?> supIftClass = null;
+                Class<?> supIftClass;
                 if ((supIftClass = (Class<?>) supItfPt.getRawType()) == targetClass) {
                     return findMatchTypeWrapper(clazz, supItfPt, varIndex);
                 }
@@ -126,7 +126,7 @@ public class GenericUtils {
             return null;
         }
         
-        // 从当前类的父接口中尝试能否查找到targetClass
+        // 从当前类的父类中尝试能否查找到targetClass
         if (supType instanceof ParameterizedType) {
             ParameterizedType supPt = (ParameterizedType) supType;
             if (supPt.getRawType() == targetClass) {

@@ -25,6 +25,11 @@ public abstract class RegisteredMultipleDomainEventSubscriber implements Multipl
         public void consume(DomainEvent event) {
             RegisteredMultipleDomainEventSubscriber.this.consume(event);
         }
+
+        @Override
+        public int getOrder() {
+            return RegisteredMultipleDomainEventSubscriber.this.getOrder();
+        }
         
     }
 

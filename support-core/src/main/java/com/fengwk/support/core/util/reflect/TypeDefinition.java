@@ -8,7 +8,7 @@ import java.lang.reflect.Type;
  */
 public interface TypeDefinition<T> {
 
-    default Type getType() {
+    default Type getDefinitionType() {
         return GenericUtils.findNearestVarType(getClass(), TypeDefinition.class, 0);
     }
     

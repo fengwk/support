@@ -3,8 +3,10 @@ package com.fengwk.support.core.util;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
+import org.apache.http.config.SocketConfig;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
@@ -48,7 +50,13 @@ public final class HttpClientFactory {
         poolingHttpClientConnectionManager.setMaxTotal(80);// 设置最大连接数
         poolingHttpClientConnectionManager.setDefaultMaxPerRoute(30);// 默认的每个路由的最大连接数
         poolingHttpClientConnectionManager.setValidateAfterInactivity(3000);// 可用空闲连接过期时间,重用空闲连接时会先检查是否空闲时间超过这个时间,如果超过,释放socket重新建立
-        return HttpClients.custom().setConnectionManager(poolingHttpClientConnectionManager).build();
+        SocketConfig socketConfig = SocketConfig.custom().setSoTimeout(30000).build();
+        RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(30000).build();
+        return HttpClients.custom()
+                .setConnectionManager(poolingHttpClientConnectionManager)
+                .setDefaultSocketConfig(socketConfig)
+                .setDefaultRequestConfig(requestConfig)
+                .build();
     }
 
 }

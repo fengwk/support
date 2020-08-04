@@ -268,7 +268,7 @@ class QueryAdapter<E extends BasicEntity<I>, P extends BasicPO<I>, I> {
     }
     
     private String adaptProperty(Property<?, ?> property) {
-        return property.getName();
+        return property.name();
     }
     
     private String adaptLike(String value) {

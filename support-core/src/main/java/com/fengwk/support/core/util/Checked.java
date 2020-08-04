@@ -29,7 +29,10 @@ public abstract class Checked<T> {
     }
     
     public void checkAndThrowIfNecessary(T value, Supplier<PrintableArg[]> argsSupplier) {
-        checkAndThrowIfNecessary(value, argsSupplier.get());
+        Result result = check(value);
+        if (!result.isSuccess()) {
+            throwOnFailure(result, argsSupplier.get());
+        }
     }
     
     private void checkAndThrowIfNecessary(T value, PrintableArg... args) {

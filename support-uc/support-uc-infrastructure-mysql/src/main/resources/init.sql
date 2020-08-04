@@ -8,7 +8,7 @@ create table user
    email                varchar(64) comment '邮箱',
    nickname             varchar(64) comment '昵称',
    password             varchar(32) comment '密码',
-   primary key pk_id(id),
+   primary key (id),
    index idx_modifiedTime(modified_time),
    unique uk_email(email),
    index idx_nickname(nickname(16))

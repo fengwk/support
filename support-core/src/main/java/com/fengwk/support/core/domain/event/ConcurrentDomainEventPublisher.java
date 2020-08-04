@@ -21,9 +21,9 @@ class ConcurrentDomainEventPublisher<S extends DomainEventSubscriber<E>, E exten
         List<S> subscribers = this.subscribers;
         for (S subscriber : subscribers) {
             if (subscriber instanceof AsyncDomainEventSubscriber) {
-                ThreadPool.submit(() -> subscriber.consume(event));
+                ThreadPool.instance().execute(() -> subscriber.consume(event));
             } else if (subscriber instanceof AsyncMultipleDomainEventSubscriber) {
-                ThreadPool.submit(() -> subscriber.consume(event));
+                ThreadPool.instance().execute(() -> subscriber.consume(event));
             } else {
                 subscriber.consume(event);
             }

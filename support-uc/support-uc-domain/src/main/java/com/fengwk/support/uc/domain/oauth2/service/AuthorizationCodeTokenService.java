@@ -64,7 +64,7 @@ public class AuthorizationCodeTokenService {
     
     private void checkIsSameClient(AuthorizationCodeTokenRequest request, AuthorizationCodeAuthRequest boundRequest) {
         if (request.getClientId() != boundRequest.getClientId()) {
-            log.warn("请求客户端id与授权码绑定的客户端id不一致,request={}.", request);
+            log.warn("请求客户端id与授权码绑定的客户端id不一致, request={}.", request);
             throw new DomainException("请求客户端id与授权码绑定的客户端id不一致");
         }
     }

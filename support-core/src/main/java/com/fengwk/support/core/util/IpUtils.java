@@ -58,10 +58,12 @@ public class IpUtils {
 
     private IpUtils() {}
     
+    @SuppressWarnings("restriction")
     public static boolean isIPv4(String addr) {
         return sun.net.util.IPAddressUtil.isIPv4LiteralAddress(addr);
     }
     
+    @SuppressWarnings("restriction")
     public static boolean isIPv6(String addr) {
         return sun.net.util.IPAddressUtil.isIPv6LiteralAddress(addr);
     }

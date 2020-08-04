@@ -26,10 +26,10 @@ public class Property<T, R> {
     private final Property<?, T> parent;
     private final SerializedLambda desc;
     
-    volatile Class<?> originalBeanClass;
-    volatile Class<T> beanClass;
-    volatile String name;
-    volatile String path;
+    Class<?> originalBeanClass;
+    Class<T> beanClass;
+    String name;
+    String path;
     
     private Property(Property<?, T> parent, Fn<T, R> fn) {
         this.parent = parent;
@@ -58,12 +58,7 @@ public class Property<T, R> {
         if (this.originalBeanClass != null) {
             return this.originalBeanClass;
         }
-        synchronized (this) {
-            if (this.originalBeanClass != null) {
-                return this.originalBeanClass;
-            }
-            evalOriginalBeanClass();
-        }
+        evalOriginalBeanClass();
         return this.originalBeanClass;
     }
     
@@ -71,38 +66,23 @@ public class Property<T, R> {
         if (this.beanClass != null) {
             return this.beanClass;
         }
-        synchronized (this) {
-            if (this.beanClass != null) {
-                return this.beanClass;
-            }
-            evalBeanClass();
-        }
+        evalBeanClass();
         return this.beanClass;
     }
     
-    public String getName() {
+    public String name() {
         if (this.name != null) {
             return this.name;
         }
-        synchronized (this) {
-            if (this.name != null) {
-                return this.name;
-            }
-            evalName();
-        }
+        evalName();
         return this.name;
     }
     
-    public String getPath() {
+    public String path() {
         if (this.path != null) {
             return this.path;
         }
-        synchronized (this) {
-            if (this.path != null) {
-                return this.path;
-            }
-            evalPath();
-        }
+        evalPath();
         return this.path;
     }
     
@@ -143,7 +123,7 @@ public class Property<T, R> {
         }
         StringJoiner joiner = new StringJoiner(".");
         while (!stack.isEmpty()) {
-            joiner.add(stack.pop().getName());
+            joiner.add(stack.pop().name());
         }
         this.path = joiner.toString();
     }
@@ -153,7 +133,7 @@ public class Property<T, R> {
         return new HashCodeBuilder()
                 .append(getOriginalBeanClass())
                 .append(getBeanClass())
-                .append(getPath())
+                .append(path())
                 .build();
     }
 
@@ -167,7 +147,7 @@ public class Property<T, R> {
         return new EqualsBuilder()
                 .append(getOriginalBeanClass(), other.getOriginalBeanClass())
                 .append(getBeanClass(), other.getBeanClass())
-                .append(getPath(), other.getPath())
+                .append(path(), other.path())
                 .build();
     }
     
@@ -176,7 +156,7 @@ public class Property<T, R> {
         return new ToStringBuilder(this)
                 .append(getOriginalBeanClass())
                 .append(getBeanClass())
-                .append(getPath()).build();
+                .append(path()).build();
     }
 
     @FunctionalInterface

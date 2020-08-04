@@ -115,7 +115,7 @@ public class ExampleBuilder {
     private String[] adaptProperties(Property<?, ?>... propertys) {
         String[] propertyNames = new String[propertys.length];
         for (int i = 0; i < propertys.length; i++) {
-            propertyNames[i] = propertys[i].getName();
+            propertyNames[i] = propertys[i].name();
         }
         return propertyNames;
     }

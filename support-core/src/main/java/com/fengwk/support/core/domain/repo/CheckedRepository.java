@@ -21,7 +21,7 @@ public class CheckedRepository<T, R> extends Checked<T> {
     }
     
     protected R repository() {
-        return this.repository;
+        return repository;
     }
 
     @Override
